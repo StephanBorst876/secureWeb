@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>MAIN</title>
+        <link rel="stylesheet" th:href="@{/styles.css}" />
+        <style>
+            .center {
+                margin: auto;
+                width: 20%;
+                font-family: Arial;
+                font-size: 20px;
+                color:mediumseagreen;
+                /*padding: 300px;*/
+            }
+        </style>
+    </head>
+    <body>
+        <img th:src="@{/images/landschap.png}"/>
+
+        <ul>
+            <li><a th:href="@{/account}">Accounts</a></li>
+            <li><a th:href="@{/klant}">Klanten</a></li>
+            <li><a th:href="@{/artikelen}">Artikelen</a></li>
+            <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
+        </ul>
+
+        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+            <input type="submit" value="Logout"/>
+        </form> 
+
+        <fieldset style="width:75%;height:25%">
+            <div>
+                <h1>Welkom bij workshop 2</h1>
+            </div>  
+        </fieldset>
+        <div class="center">
+            <marquee>Application powered by team POLS: Pascal, Olaf, Liz en Stephan</marquee>
+            </div>
+
+    </body>
+</html>

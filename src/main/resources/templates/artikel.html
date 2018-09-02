@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Artikel</title>
+        <link rel="stylesheet" th:href="@{/styles.css}" />
+    </head>
+    <body>
+        <img th:src="@{/images/landschap.png}"/>
+
+        <ul>
+            <li><a th:href="@{/main}">Home</a></li>
+            <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
+        </ul>
+
+        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+            <input type="submit" value="Logout"/>
+        </form> 
+
+        <fieldset style="width:75%;">
+            <div>
+                <h1>Artikel invoeren / wijzigen</h1>
+            </div> 
+            <form name="artikelForm" th:action="@{/artikelForm}" method="post" th:object="${artikel}">
+                <input type="hidden" th:field="*{id}"/>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('naam')}" 
+                      th:errors="*{naam}">Artikelnaam moet ingevuld!</span>
+                <table>
+                    <tr>
+                        <td class=text>Artikelnaam : </td>
+                        <td><input type="text" th:field="*{naam}"/></td>
+                    </tr>
+                    <tr>
+                        <td class=text>Prijs : </td>
+                        <td><input type="number" min="0" step="any"  th:field="*{prijs}"/></td>
+                    </tr>
+                    <tr>
+                        <td class=text>Voorraad : </td>
+                        <td><input type="number" min="0" th:field="*{voorraad}"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan=2>
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <ul>
+                                <li><a href="javascript: document.artikelForm.submit()">Muteer</a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+
+            </form> 
+        </fieldset>
+    </body>
+</html>

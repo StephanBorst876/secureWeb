@@ -1,0 +1,105 @@
+body {
+    background-color: #F0F0F0;
+    font-family: Arial;
+    font-size: 20px;
+}
+
+img {
+    width : 100%;
+    height : auto;
+}
+
+table { 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td.text {
+    text-align: right;
+}
+
+.link {
+    color : black;
+}
+
+fieldset {
+    width : 50%;
+    margin: 50px auto 10px auto;
+    border-color: black;
+    border-style: solid;
+    border-radius: 10px;
+    background-color:#B0B0B0;
+    text-align:center;
+}
+
+/*input[type=text], input[type=number], input[type=password] {*/
+input {
+    border: 1px solid black;
+    border-radius: 4px;
+    font-family: Arial;
+    font-size: 20px;
+    padding: 5px 5px;
+    /*box-sizing: border-box;*/
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    background-color: #4CAF50;
+    float: left;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: black;
+}
+
+ul:last-child {
+    margin-right: 2px;
+}
+
+/* =============================== */
+/* Nice table layout			*/
+/* =============================== */
+table#nice, table#nice th, table#nice td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: right;
+    padding: 5px 5px;
+}
+
+table#nice td.left, table#nice th.left{
+    text-align: left;
+}
+
+table#nice td.center {
+    text-align: center;
+}
+
+table#nice th {
+    background-color: #4CAF50;
+    color : white;
+}
+
+table#nice tr:nth-child(even) {
+    background-color: #eee;
+}
+
+table#nice tr:nth-child(odd) {
+    background-color: #fff;
+}

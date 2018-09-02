@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Artikelen</title>
+        <link rel="stylesheet" th:href="@{/styles.css}" />
+    </head>
+    <body>
+        <img th:src="@{/images/landschap.png}"/>
+
+        <ul>
+            <li><a th:href="@{/main}">Home</a></li>
+            <li><a th:href="@{/artikel/nieuw}">Nieuw artikel</a></li>
+            <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
+        </ul>
+
+        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+            <input type="submit" value="Logout"/>
+        </form> 
+
+        <fieldset style="width:75%;">
+            <div>
+                <h1>Artikelen</h1>
+            </div> 
+            <table id="nice">
+                <tr>
+                    <th class=left>Artikelnaam</th>
+                    <th>Prijs</th>
+                    <th>Voorraad</th>
+                </tr>
+                <div th:each="artikel : ${artikelen}">
+                    <tr>
+                        <td class=left><a class=link th:href="@{/artikel/muteer/{id} (id=${artikel.id})}">
+                                <span th:text="${artikel.naam}">Naam</span></a>
+                        </td>
+                        <!--<td class=left><span th:text="${artikel.naam}">Naam</span></td>-->
+                        <td><span th:text="${artikel.prijs}">Prijs</span></td>
+                        <td><span th:text="${artikel.voorraad}">Voorraad</span></td>
+
+
+                    </tr>
+                </div>
+            </table>
+        </fieldset>
+    </body>
+</html>
