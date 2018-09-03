@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>Accounts</title>
+<link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+	<img th:src="@{/images/landschap.png}" />
+
+	<ul>
+		<li><a th:href="@{/main}">Home</a></li>
+		<li><a th:href="@{/account/nieuw}">Nieuw account</a></li>
+		<li style="float: right"><a
+			href="javascript: document.logoutForm.submit()">Uitloggen</a></li>
+	</ul>
+
+	<form name="logoutForm" th:action="@{/logout}" method="post"
+		th:hidden="true">
+		<input type="submit" value="Logout" />
+	</form>
+
+	<fieldset style="width: 75%;">
+		<div>
+			<h1>Accounts</h1>
+		</div>
+		<table id="nice">
+			<tr>
+				<th class=left>Usernaam</th>
+				<th>Password</th>
+				<th>Rol</th>
+			</tr>
+			<div th:each="account : ${accounts}">
+				<tr>
+					<td class=left><a class=link
+						th:href="@{/account/muteer/{id} (id=${account.id})}"> <span
+							th:text="${account.userNaam}">Usernaam</span></a></td>
+					<td><span th:text="${account.password}">Password</span></td>
+					<td><span th:text="${account.rol}">Rol</span></td>
+				</tr>
+			</div>
+		</table>
+	</fieldset>
+</body>
+</html>
