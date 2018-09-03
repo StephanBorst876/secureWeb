@@ -47,11 +47,9 @@
     <body>
 
         <div class="slideshow-container">
-
             <div class="mySlides fade">
                 <img th:src="@{/images/landschap.png}"/>
             </div>
-
             <div class="mySlides fade">
                 <img th:src="@{/images/kaasboerderij.png}"/>
             </div>
@@ -108,7 +106,7 @@
                 }
                 slideIndex++;
                 if (slideIndex > slides.length) {
-                    slideIndex = 1
+                    slideIndex = 1;
                 }
 
                 slides[slideIndex - 1].style.display = "block";

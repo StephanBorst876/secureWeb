@@ -29,10 +29,10 @@ public class Artikel implements Serializable {
 
     @Column(length = 45)
     @ColumnDefault("null")
-    @NotBlank(message = "Artikelnaam is verplicht!")
+    @NotBlank(message = "Artikelnaam = verplicht!")
     private String naam;
 
-    @ColumnDefault("0")
+    @ColumnDefault("0.00")
     private BigDecimal prijs;
 
     @ColumnDefault("0")

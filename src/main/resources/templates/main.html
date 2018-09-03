@@ -15,6 +15,7 @@
                 /*padding: 300px;*/
             }
         </style>
+
     </head>
     <body>
         <img th:src="@{/images/landschap.png}"/>
@@ -23,6 +24,7 @@
             <li><a th:href="@{/account}">Accounts</a></li>
             <li><a th:href="@{/klant}">Klanten</a></li>
             <li><a th:href="@{/artikelen}">Artikelen</a></li>
+            <li><a th:href="@{/bestelling}">Bestellingen</a></li>
             <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
         </ul>
 
@@ -35,9 +37,11 @@
                 <h1>Welkom bij workshop 2</h1>
             </div>  
         </fieldset>
+
         <div class="center">
             <marquee>Application powered by team POLS: Pascal, Olaf, Liz en Stephan</marquee>
-            </div>
+        </div>
+
 
     </body>
 </html>
