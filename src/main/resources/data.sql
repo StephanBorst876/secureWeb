@@ -2,9 +2,9 @@ INSERT INTO artikel VALUES (60,'Komijnen Kaas',10.00,878);
 INSERT INTO artikel VALUES (63,'jonge kaas',2.25,990);
 INSERT INTO artikel VALUES (64,'oude kaas',3.75,988);
 
-INSERT INTO account (id,username,password,rol) VALUES (204,'Piet','$2a$12$9ZfjY8eSNGOivd/RKiBgt.duuPSYaC2ZoUCpyedwS0cix81bRnYJK','beheerder');
+INSERT INTO account (id,username,password,rol) VALUES (204,'boer','$2a$10$Kjrtr2Mm6v/HzA2YAHVihejqb3uiKzUDNbJGcIWTP5W2T5BGXowYO','beheerder');
 INSERT INTO account (id,username,password,rol) VALUES (205,'Pascal','$2a$12$a3mmayZiUfvPntn7GUVeLu5dcQMEaDg83CuJkU3rcjWlFvIuZeo4m','klant');
-INSERT INTO account (id,username,password,rol) VALUES (206,'Olaf','$2a$12$IP1U.gDu51hpWJhjpWpRl.Q8et1Qw5Uyk.jfu6Ntq15isbC3J/.Ry','medewerker');
+INSERT INTO account (id,username,password,rol) VALUES (206,'Olaf','$2a$10$6gb18xtFEIji9ADyEYUti.RCQOAfUDtgKoiBz1npg/evN5LrTUNYe','medewerker');
 INSERT INTO account (id,username,password,rol) VALUES (207,'Liz','$2a$12$o/gbDUwHgWdMsiuYVJMDWekIGywHz6Y.LnvvWDj.QRcB6IEkrT/xG','klant');
 INSERT INTO account (id,username,password,rol) VALUES (321,'Karel','$2a$12$UkZBgb7LrYQGYNG96c3n6OpBdf8o6s4QIvoCLiTiutaefsU6r31xS','klant');
 INSERT INTO account (id,username,password,rol) VALUES (322,'Klant','$2a$12$eh4wg5izU2jCKhrB13f.sOauo0NkJqF2rmrEpP7HQBiEpqF/3W.yu','klant');

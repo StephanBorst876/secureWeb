@@ -7,6 +7,10 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -54,7 +58,7 @@ public class AccountController {
                 Account account = optionalArt.get();
                 if (account != null) {
                     model.addAttribute("account", account);
-                    return "account";
+                    return "accountmuteer";
                 }
             }
 
@@ -71,24 +75,40 @@ public class AccountController {
     	
         model.addAttribute("account", new Account());
 
-        return "account";
+        return "accountNieuw";
     }
 
-    @PostMapping("/accountForm")
-    public String processAccount(@Valid Account account, Errors errors) {
+    @PostMapping("/accountNieuwForm")
+    public String processAccountNieuw(@Valid Account account, Errors errors) {
         if (errors.hasErrors()) {
-            return "account";
+            return "accountNieuw";
         }
        
         if(accountRepo.existsByuserNaam(account.getUserNaam())) {
-        	return "account";
+        	return "accountNieuw";
         }
-     
+        account.setPassword(BCrypt.hashpw(account.getPassword(),BCrypt.gensalt(12)));
         accountRepo.save(account);
 
         // Nu terug naar de Get op /accounts om de gehele lijst te tonen
         return "redirect:/accounts";
     }
     
+    @PostMapping("/accountMuteerForm")
+    public String processAccountMuteer(@Valid Account account, Errors errors) {
+        if (errors.hasErrors()) {
+            return "accountmuteer";
+        }
+       
+        if(accountRepo.existsByuserNaam(account.getUserNaam())) {
+        	return "accountmuteer";
+        }
+        account.setPassword(BCrypt.hashpw(account.getPassword(),BCrypt.gensalt(12)));
+        accountRepo.save(account);
+
+        // Nu terug naar de Get op /accounts om de gehele lijst te tonen
+        return "redirect:/accounts";
+    }
     
+	
 }
