@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Klanten</title>
+        <link rel="stylesheet" th:href="@{/styles.css}" />
+    </head>
+    <body>
+        <img th:src="@{/images/landschap.png}"/>
+
+        <ul>
+            <li><a th:href="@{/main}">Home</a></li>
+            <li><a th:href="@{/klant/nieuw}">Nieuwe klant</a></li>
+            <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
+        </ul>
+
+        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+            <input type="submit" value="Logout"/>
+        </form> 
+
+        <fieldset style="width:75%;">
+            <div>
+                <h1>Klanten</h1>
+            </div> 
+            <table id="nice">
+                <tr>
+                    <th class=left>Voornaam</th>
+                    <th>Tussenvoegsel</th>
+                    <th>Achternaam</th>
+                    <th>Accountnaam</th>
+                </tr>
+                <div th:each="klant : ${klanten}">
+                    <tr>
+                        <td class=left><a class=link th:href="@{/klant/muteer/{id} (id=${klant.id})}">
+                                <span th:text="${klant.voornaam}">Voornaam</span></a>
+                        </td>
+                        <td class=left><span th:text="${klant.tussenvoegsel}">Tussenvoegsel</span></td>
+                        <td class=left><span th:text="${klant.achternaam}">Achternaam</span></td>
+                        <td class=left><span th:text="${klant.account!=null}?${klant.account.userNaam}:'to be specified'">Stef</span></td>
+                        
+                    </tr>
+                </div>
+            </table>
+        </fieldset>
+    </body>
+</html>

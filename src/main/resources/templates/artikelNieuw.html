@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
-        <title>Account</title>
+        <title>Artikel beheer</title>
         <link rel="stylesheet" th:href="@{/styles.css}" />
     </head>
     <body>
@@ -11,7 +11,7 @@
 
         <ul>
             <li><a th:href="@{/main}">Home</a></li>
-            <li><a th:href="@{/accounts}">Accounts</a></li>
+            <li><a th:href="@{/artikelen}">Artikelen</a></li>
             <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
         </ul>
 
@@ -21,25 +21,25 @@
 
         <fieldset style="width:75%;">
             <div>
-                <h1>Account invoeren / wijzigen</h1>
+                <h1>Artikel toevoegen</h1>
             </div> 
-            <form name="accountForm" th:action="@{/accountForm}" method="post" th:object="${account}">
+            <form name="artikelForm" th:action="@{/artikelForm}" method="post" th:object="${artikel}">
                 <input type="hidden" th:field="*{id}"/>
                 <span class="validationError"
-                      th:if="${#fields.hasErrors('userNaam')}" 
-                      th:errors="*{userNaam}">usernaam moet ingevuld!</span>
+                      th:if="${#fields.hasErrors('naam')}" 
+                      th:errors="*{naam}">Artikelnaam moet ingevuld!</span>
                 <table>
                     <tr>
-                        <td class=text>usernaam : </td>
-                        <td><input type="text" th:field="*{userNaam}"/></td>
+                        <td class=text>Artikelnaam : </td>
+                        <td><input type="text" th:field="*{naam}"/></td>
                     </tr>
                     <tr>
-                        <td class=text>Password : </td>
-                        <td><input type="text"   th:field="*{password}"/></td>
+                        <td class=text>Prijs : </td>
+                        <td><input type="number" min="0" step="any"  th:field="*{prijs}"/></td>
                     </tr>
                     <tr>
-                        <td class=text>Rol : </td>
-                        <td><input type="text"  th:field="*{rol}"/></td>
+                        <td class=text>Voorraad : </td>
+                        <td><input type="number" min="0" th:field="*{voorraad}"/></td>
                     </tr>
                     <tr>
                         <td colspan=2>
@@ -50,13 +50,14 @@
                         <td></td>
                         <td>
                             <ul>
-                                <li><a href="javascript: document.accountForm.submit()">OK</a></li>
+                                <li><a href="javascript: document.artikelForm.submit()">Toevoegen</a></li>
                             </ul>
                         </td>
                     </tr>
                 </table>
 
             </form> 
+
         </fieldset>
     </body>
 </html>
