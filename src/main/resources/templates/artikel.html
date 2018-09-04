@@ -11,6 +11,7 @@
 
         <ul>
             <li><a th:href="@{/main}">Home</a></li>
+            <li><a th:href="@{/artikelen}">Artikelen</a></li>
             <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
         </ul>
 
@@ -20,7 +21,7 @@
 
         <fieldset style="width:75%;">
             <div>
-                <h1>Artikel invoeren / wijzigen</h1>
+                <h1>Artikel beheer</h1>
             </div> 
             <form name="artikelForm" th:action="@{/artikelForm}" method="post" th:object="${artikel}">
                 <input type="hidden" th:field="*{id}"/>

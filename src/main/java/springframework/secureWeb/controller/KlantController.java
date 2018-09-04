@@ -25,7 +25,7 @@ import springframework.secureWeb.domein.Klant;
  * @author FeniksBV
  */
 @Controller
-@SessionAttributes("klantID")
+@SessionAttributes(value = {"klantID", "adresID"})
 public class KlantController {
 
     @SuppressWarnings("unused")
@@ -37,6 +37,11 @@ public class KlantController {
     @ModelAttribute("klantID")
     public Klant verwijderKlantId() {
         return new Klant();
+    }
+
+    @ModelAttribute("adresID")
+    public Adres keepAdresId() {
+        return new Adres();
     }
 
     @Autowired
@@ -56,7 +61,8 @@ public class KlantController {
     }
 
     @RequestMapping(value = "/klant/muteer/{klantId}")
-    public String KlantMuteer(@ModelAttribute("klantID") Klant klant, Model model, @PathVariable("klantId") String klantId) {
+    public String KlantMuteer(@ModelAttribute("klantID") Klant klant,
+            @ModelAttribute("adresID") Adres adres, Model model, @PathVariable("klantId") String klantId) {
         //
         // Het omzetten van het klantID doe ik hier, want anders geeft Spring Boot
         // (or Thymeleaf) een Exception wanneer er iets wordt aangeboden als:
@@ -76,10 +82,17 @@ public class KlantController {
                     for (int i = 0; i < adresList.size(); i++) {
                         if (adresList.get(i).getAdresType().equals(Adres.AdresType.POSTADRES)) {
                             postAdresAdded = true;
+                            adres.setId(adresList.get(i).getId());
                             model.addAttribute("postadres", adresList.get(i));
+                        } else if (adresList.get(i).getAdresType().equals(Adres.AdresType.BEZORGADRES)) {
+                            model.addAttribute("bezorgadres", adresList.get(i));
+                        } else if (adresList.get(i).getAdresType().equals(Adres.AdresType.FACTUURADRES)) {
+                            model.addAttribute("factuuradres", adresList.get(i));
                         }
                     }
                     if (!postAdresAdded) {
+                        // reset ook de sessionattribute
+                        adres.setId(0L);
                         model.addAttribute("postadres", new Adres(Adres.AdresType.POSTADRES));
                     }
 
@@ -105,16 +118,24 @@ public class KlantController {
     }
 
     @GetMapping("/klant/nieuw")
-    public String KlantNieuw(Model model) {
+    public String KlantNieuw(@ModelAttribute("adresID") Adres adres, Model model) {
 
-        model.addAttribute("klant", new Klant());
+        // SHIT happens||
+        // Klant en adres hebben beide een id, dit geeft problemen
+        // die met onderstaande code worden opgelost
+        adres.setId(0L);
+        Klant klant = new Klant();
+        klant.setId(0L);
+        model.addAttribute("klant", klant);
         model.addAttribute("postadres", new Adres(Adres.AdresType.POSTADRES));
 
         return "klantNieuw";
     }
 
     @PostMapping("/klantForm")
-    public String processArtikel(@Valid Klant klant, @Valid Adres postAdres, Model model, Errors errors) {
+    public String processKlant(@Valid Klant klant, @Valid Adres postAdres,
+            @SessionAttribute("adresID") Adres adres, Model model, Errors errors) {
+
         if (errors.hasErrors()) {
             model.addAttribute("klant", klant);
             model.addAttribute("postadres", postAdres);
@@ -125,9 +146,11 @@ public class KlantController {
             }
         }
 
-        klantRepo.save(klant);
+        postAdres.setId(adres.getId());
+
+        klant = klantRepo.save(klant);
         postAdres.setKlant(klant);
-        adresRepo.save(postAdres);
+        postAdres = adresRepo.save(postAdres);
 
         // Nu terug naar de Get op /artikelen om de gehele lijst te tonen
         return "redirect:/klanten";

@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "Adres")
@@ -35,13 +34,13 @@ public class Adres implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Adres_Id")
-    private int id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 15)
     private AdresType adresType;
 
-    @NotBlank(message = "Straatnaam is verplicht!")
+//    @NotBlank(message = "Straatnaam is verplicht!")
     private String straatnaam;
 
     private int huisnummer;
@@ -56,29 +55,8 @@ public class Adres implements Serializable{
     }
 
     public Adres(AdresType adresType) {
+        this.id = 0L;
         this.adresType = adresType;
-    }
-
-    public Adres(AdresType adresType, String straatnaam, int huisnummer, String postcode, String woonplaats, Klant klant) {
-        this.adresType = adresType;
-        this.straatnaam = straatnaam;
-        this.huisnummer = huisnummer;
-        this.toevoeging = "";
-        this.postcode = postcode;
-        this.woonplaats = woonplaats;
-        this.klant = klant;
-
-    }
-
-    public Adres(AdresType adresType, String straatnaam, int huisnummer, String toevoeging, String postcode, String woonplaats, Klant klant) {
-        this.adresType = adresType;
-        this.straatnaam = straatnaam;
-        this.huisnummer = huisnummer;
-        this.toevoeging = toevoeging;
-        this.postcode = postcode;
-        this.woonplaats = woonplaats;
-        this.klant = klant;
-
     }
 
     public void setStraatnaam(String straatnaam) {
@@ -101,11 +79,11 @@ public class Adres implements Serializable{
         this.woonplaats = woonplaats;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -145,28 +123,4 @@ public class Adres implements Serializable{
         this.klant = klant;
     }
 
-    public boolean equals(Adres adres) {
-        if (this.id != adres.getId()) {
-            return false;
-        }
-        if (!this.straatnaam.equals(adres.getStraatnaam())) {
-            return false;
-        }
-        if (this.huisnummer != adres.getHuisnummer()) {
-            return false;
-        }
-        if (!this.toevoeging.equals(adres.getToevoeging())) {
-            return false;
-        }
-        if (!this.postcode.equals(adres.getPostcode())) {
-            return false;
-        }
-        if (!this.woonplaats.equals(adres.getWoonplaats())) {
-            return false;
-        }
-        if (!this.adresType.equals(adres.getAdresType())) {
-            return false;
-        }
-        return true;
-    }
 }

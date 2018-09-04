@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Adres beheer</title>
+        <link rel="stylesheet" th:href="@{/styles.css}" />
+    </head>
+    <body>
+        <img th:src="@{/images/landschap.png}"/>
+
+        <ul>
+            <li><a th:href="@{/main}">Home</a></li>
+            <li><a th:href="@{/klant/muteer/{id} (id=${klant.id})}">Terug naar klant</a></li>
+            <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
+        </ul>
+
+        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+            <input type="submit" value="Logout"/>
+        </form> 
+
+        <fieldset style="width:75%;">
+            <div>
+                <h1><span th:text="${adres.adresType}"></span></h1>
+            </div> 
+
+            <form name="adresForm" th:action="@{/adresForm}" method="post" th:object="${adres}">
+
+                <input type="hidden" th:field="${adres.id}"/>
+                <input type="hidden" th:field="${adres.adresType}"/>
+
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('straatnaam')}" 
+                      th:errors="*{voornaam}">Straatnaam moet ingevuld!</span>
+
+                <table>
+                    <tr>
+                        <td class=text>Straatnaam : </td>
+                        <td><input type="text" th:field="${adres.straatnaam}"/></td>
+                    </tr>
+                    <tr>
+                        <td class=text>Huisnummer : </td>
+                        <td><input type="text" th:field="${adres.huisnummer}"/></td>
+                    </tr>
+                    <tr>
+                        <td class=text>Toevoeging : </td>
+                        <td><input type="text" th:field="${adres.toevoeging}"/></td>
+                    </tr>
+                    <tr>
+                        <td class=text>Postcode : </td>
+                        <td><input type="text" th:field="${adres.postcode}"/></td>
+                    </tr>
+                    <tr>
+                        <td class=text>Woonplaats : </td>
+                        <td><input type="text" th:field="${adres.woonplaats}"/></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan=2>
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <ul>
+                                <li><a href="javascript: document.adresForm.submit()">Wijzig</a></li>
+                                <li onclick="bevestigKeuze()"><a>Verwijder</a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+
+            </form> 
+
+            <form name="adresVerwijder" th:action="@{/adres/verwijder}" method="post" th:hidden="true">
+                <input type="submit" value="Adres verwijderen"/>
+            </form> 
+        </fieldset>
+
+        <script type="text/javascript">
+            function bevestigKeuze() {
+                if (confirm('Wilt u dit adres echt verwijderen?')) {
+                    document.adresVerwijder.submit();
+                } else {
+                    return false;
+                }
+            }
+        </script>
+    </body>
+</html>

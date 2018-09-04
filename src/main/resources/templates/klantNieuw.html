@@ -47,7 +47,9 @@
                     </tr>
 
                     <div th:object="${postadres}" >
-                        <tr><td class=text>Postadres</td></tr>
+                        <tr><td class=text>Postadres</td>
+                            <input type="hidden" th:field="*{adresType}"/>
+                        </tr>
                         <tr>
                             <td class=text>Straatnaam : </td>
                             <td><input type="text" th:field="*{straatnaam}"/></td>

@@ -18,6 +18,10 @@ td.text {
     text-align: right;
 }
 
+td.left {
+    text-align: left;
+}
+
 .link {
     color : black;
 }
