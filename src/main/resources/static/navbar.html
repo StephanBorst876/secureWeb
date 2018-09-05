@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
         <title>MAIN</title>
-        <link rel="stylesheet" th:href="@{/styles.css}" />
+        <link rel="stylesheet" href="styles.css" />
         <style>
             .center {
                 margin: auto;
@@ -17,19 +17,15 @@
 
     </head>
     <body>
-        <img th:src="@{/images/landschap.png}"/>
-
         <ul>
-            
-            <li th:style="${navbar.accounts} ? 'display:block' : 'display:none'" ><a th:href="@{/accounts}">Accounts</a></li>
+            <li style="display : none;"><a th:href="@{/accounts}">Accounts</a></li>
             <li><a th:href="@{/klanten}">Klanten</a></li>
             <li><a th:href="@{/artikelen}">Artikelen</a></li>
             <li><a th:href="@{/bestelling}">Bestellingen</a></li>
             <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
-            <li style="float:right"><b>Gebruiker : <span sec:authentication="name">USERNAME</span></b></li>
         </ul>
-        
-        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+
+        <form name="logoutForm" action="/logout" method="post" hidden="true">
             <input type="submit" value="Logout"/>
         </form> 
 

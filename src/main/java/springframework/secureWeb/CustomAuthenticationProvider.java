@@ -12,44 +12,49 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import springframework.secureWeb.data.AccountRepository;
+import springframework.secureWeb.domein.Account;
 
 @Component
-public class CustomAuthenticationProvider implements AuthenticationProvider  {
-	
-	
-private AccountRepository accountRepo;
+@SessionAttributes("accountRol")
+public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-@Autowired
-	public CustomAuthenticationProvider(AccountRepository accountRepo) {
-	
-		  this.accountRepo=accountRepo;
-	}
+    private AccountRepository accountRepo;
 
-	@Override
-	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    @Autowired
+    public CustomAuthenticationProvider(AccountRepository accountRepo) {
+        this.accountRepo = accountRepo;
+    }
 
-		String name = authentication.getName();
-		String password = authentication.getCredentials().toString();
-		
-	//	if (accountRepo.findByuserNaam(name).getPassword().equals(passwordEncoder().encode(password))) {
-		if (BCrypt.checkpw(password, accountRepo.findByuserNaam(name).getPassword())) {
-			// use the credentials
-			// and authenticate against the third-party system
-			return new UsernamePasswordAuthenticationToken(name, password, new ArrayList<>());
-		} else {
-			return null;
-		}
-	}
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
-	@Override
-	public boolean supports(Class<?> authentication) {
-		return authentication.equals(UsernamePasswordAuthenticationToken.class);
-	}
+        String name = authentication.getName();
+        String password = authentication.getCredentials().toString();
+
+        Account inlogAccount = accountRepo.findByuserNaam(name);
+        if (inlogAccount == null) {
+            return null;
+        }
+                
+        if (BCrypt.checkpw(password, inlogAccount.getPassword())) {
+            // use the credentials
+            // and authenticate against the third-party system
+            return new UsernamePasswordAuthenticationToken(name, password, new ArrayList<>());
+        } else {
+            return null;
+        }
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+    }
 }

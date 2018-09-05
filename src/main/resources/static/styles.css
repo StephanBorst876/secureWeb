@@ -47,7 +47,7 @@ input {
 }
 
 select{ 
-	border: 1px solid black;
+    border: 1px solid black;
     border-radius: 4px;
     font-family: Arial;
     font-size: 20px;
@@ -68,9 +68,18 @@ li {
     margin-right: 10px;
 }
 
-li a {
+li a{
     display: block;
     color: white;
+    text-align: center;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+li b {
+    background-color: #B0B0B0;
+    display: block;
+    color: black;
     text-align: center;
     padding: 5px 10px;
     text-decoration: none;
