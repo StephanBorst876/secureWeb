@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.ColumnDefault;
 
@@ -37,11 +38,12 @@ public class Account implements Serializable {
 
     @Column(name = "username", length = 45)
     @ColumnDefault("null")
-
+    @NotBlank(message = "Usernaam = verplicht!")
     private String userNaam;
 
     @Column(length = 60)
     @ColumnDefault("null")
+    @NotBlank(message = "password = verplicht!")
     private String password;
 
     @Enumerated(EnumType.STRING)
