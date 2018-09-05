@@ -41,10 +41,12 @@
 				</tr>
 				<tr>
 					<td class=text>Rol :</td>
-					<td class=left><select name="rol" id="rol">
-							<option value="klant">klant</option>
-							<option value="medewerker">medewerker</option>
-							<option value="beheerder">beheerder</option>
+					<td class=left><select th:field="*{rol}">
+					  <option th:each="rol : ${T(springframework.secureWeb.domein.Account.Rol).values()}"
+            th:value="${rol}"
+            th:text="${rol}">
+    </option>
+							
 					</select></td>
 				</tr>
 				<tr>

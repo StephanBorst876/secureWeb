@@ -27,9 +27,13 @@
 		</div>
 		<form name="accountNieuwForm" th:action="@{/accountNieuwForm}" method="post"
 			th:object="${account}">
-			<input type="hidden" th:field="*{id}" /> <span
+			<input type="hidden" th:field="*{id}" />
+			 <span
 				class="validationError" th:if="${#fields.hasErrors('userNaam')}"
 				th:errors="*{userNaam}">usernaam moet ingevuld!</span>
+				 <span
+				class="validationError" th:if="${#fields.hasErrors('password')}"
+				th:errors="*{password}">password moet ingevuld!</span>
 			<table>
 				<tr>
 					<td class=text>usernaam :</td>
