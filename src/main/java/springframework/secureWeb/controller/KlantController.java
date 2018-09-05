@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import springframework.secureWeb.data.AdresRepository;
 import springframework.secureWeb.data.KlantRepository;
 import springframework.secureWeb.domein.Adres;
@@ -25,7 +24,6 @@ import springframework.secureWeb.domein.Klant;
  * @author FeniksBV
  */
 @Controller
-@SessionAttributes(value = { "klantID", "adresID" })
 public class KlantController {
 
 	@SuppressWarnings("unused")
