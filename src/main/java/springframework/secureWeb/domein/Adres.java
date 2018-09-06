@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "Adres")
@@ -40,7 +42,8 @@ public class Adres implements Serializable{
     @Column(length = 15)
     private AdresType adresType;
 
-//    @NotBlank(message = "Straatnaam is verplicht!")
+    @ColumnDefault("null")
+    @NotBlank(message = "Straatnaam is verplicht!")
     private String straatnaam;
 
     private int huisnummer;

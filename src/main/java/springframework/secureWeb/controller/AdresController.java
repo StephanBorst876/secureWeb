@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import springframework.secureWeb.data.AdresRepository;
 import springframework.secureWeb.data.KlantRepository;
 import springframework.secureWeb.domein.Adres;
@@ -20,6 +22,7 @@ import springframework.secureWeb.domein.Klant;
  * @author FeniksBV
  */
 @Controller
+@SessionAttributes({"klantID", "adresID"})
 public class AdresController {
 
     @SuppressWarnings("unused")
@@ -34,38 +37,53 @@ public class AdresController {
         this.adresRepo = adresRepo;
     }
 
-    @GetMapping("/bezorgadres")
-    public String BezorgAdres(@SessionAttribute("klantID") Klant klant,
-            @SessionAttribute("adresID") Adres sessionAdres, Model model) {
+    @RequestMapping(value = "/bezorgadres/{klantId}")
+    public String BezorgAdres(Model model, @PathVariable("klantId") String klantId) {
 
-        Klant modelKlant = klantRepo.findById(klant.getId()).get();
-        model.addAttribute("klant", modelKlant);
+        try {
+            Long id = Long.valueOf(klantId);
+            Adres adres = findAdres(AdresType.BEZORGADRES, id);
+            model.addAttribute("adres", adres);
 
-        Adres adres = findAdres(AdresType.BEZORGADRES, klant.getId());
-        model.addAttribute("adres", adres);
+            model.addAttribute("klant_id", id);
+            // 
+            // en de sessionattributes
+            model.addAttribute("adresID", adres.getId());
+            model.addAttribute("klantID", id);
 
-        sessionAdres.setId(adres.getId());
+            return "adres";
+        } catch (NumberFormatException ex) {
 
-        return "adres";
+        }
+
+        return "redirect:/klanten";
+
     }
 
-    @GetMapping("/factuuradres")
-    public String FactuurAdres(@SessionAttribute("klantID") Klant klant,
-            @SessionAttribute("adresID") Adres sessionAdres, Model model) {
+    @RequestMapping(value = "/factuuradres/{klantId}")
+    public String FactuurAdres(Model model, @PathVariable("klantId") String klantId) {
+        
+        try {
+            Long id = Long.valueOf(klantId);
+            Adres adres = findAdres(AdresType.FACTUURADRES, id);
+            model.addAttribute("adres", adres);
 
-        Klant modelKlant = klantRepo.findById(klant.getId()).get();
-        model.addAttribute("klant", modelKlant);
+            model.addAttribute("klant_id", id);
+            // 
+            // en de sessionattributes
+            model.addAttribute("adresID", adres.getId());
+            model.addAttribute("klantID", id);
 
-        Adres adres = findAdres(AdresType.FACTUURADRES, klant.getId());
-        model.addAttribute("adres", adres);
+            return "adres";
+        } catch (NumberFormatException ex) {
 
-        sessionAdres.setId(adres.getId());
+        }
 
-        return "adres";
+        return "redirect:/klanten";
     }
 
     @PostMapping("/adresForm")
-    public String processAdres(@Valid Adres adres, @SessionAttribute("klantID") Klant klant,
+    public String processAdres(@Valid Adres adres, @ModelAttribute("klantID") Long klantID,
             Model model, Errors errors) {
 
         if (errors.hasErrors()) {
@@ -76,23 +94,24 @@ public class AdresController {
             }
         }
 
+        Klant klant = klantRepo.findById(klantID).get();
         adres.setKlant(klant);
         adresRepo.save(adres);
 
         // Nu terug naar de klant
-        return "redirect:/klant/muteer/" + klant.getId();
+        return "redirect:/klant/muteer/" + klantID;
     }
 
     @PostMapping("/adres/verwijder")
-    public String verwijderAdres(@SessionAttribute("adresID") Adres adres,
-            @SessionAttribute("klantID") Klant klant) {
+    public String verwijderAdres(@ModelAttribute("adresID") Long adresID,
+            @ModelAttribute("klantID") Long klantID) {
 
-        if (adres.getId() != null) {
-            adresRepo.deleteById(adres.getId());
+        if (adresID != 0L) {
+            adresRepo.deleteById(adresID);
         }
 
         // Nu terug naar de klant
-        return "redirect:/klant/muteer/" + klant.getId();
+        return "redirect:/klant/muteer/" + klantID;
     }
 
     protected Adres findAdres(AdresType adresType, Long klantId) {
@@ -104,6 +123,7 @@ public class AdresController {
             }
         }
         Adres adres = new Adres();
+        adres.setId(0L);
         adres.setAdresType(adresType);
         return adres;
     }

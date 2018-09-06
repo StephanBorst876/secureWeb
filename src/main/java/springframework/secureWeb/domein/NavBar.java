@@ -12,19 +12,18 @@ public class NavBar {
     private boolean klanten;
     private boolean artikelen;
 
-    public NavBar(String rol) {
+    public NavBar(String accountRol) {
 
         accounts = false;
         klanten = false;
         artikelen = false;
-        System.out.println("De rol = " + rol);
-        Rol accountRol = Account.Rol.toRol(rol);
         
-        if (accountRol.equals(Account.Rol.beheerder)) {
+        Rol rol = Account.Rol.toRol(accountRol);
+        if (rol.equals(Account.Rol.beheerder)) {
             accounts = true;
         }
         
-        if (accountRol.equals(Account.Rol.beheerder) || accountRol.equals(Account.Rol.medewerker)) {
+        if (rol.equals(Account.Rol.beheerder) || rol.equals(Account.Rol.medewerker)) {
             klanten = true;
             artikelen = true;
         }

@@ -6,53 +6,25 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	 @Autowired
-    private CustomAuthenticationProvider  authProvider;
-	 
-//	private  final String ENCODED_PASSWORD = passwordEncoder().encode("piet");
-	
+    @Autowired
+    private CustomAuthenticationProvider authProvider;
+
     String[] staticResources = {
         "/styles.css",
         "/images/**",};
 
-   @Override
-    protected void configure( final AuthenticationManagerBuilder auth) throws Exception {
-	   
+    @Override
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+
         auth.authenticationProvider(authProvider);
     }
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-        	.authorizeRequests()
-          	.antMatchers(staticResources).permitAll()
-          	.anyRequest().authenticated()
-      
-            .and()
-            .formLogin()
-            .loginPage("/login")
-            . defaultSuccessUrl("/main")
-            .permitAll()
-            .and() 
-           // .httpBasic()
-            .logout()
-            .permitAll();
-         
-    }
-    
-    /*
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-    */
- /*
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -62,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                . defaultSuccessUrl("/main.html")
+                .defaultSuccessUrl("/main")
                 .permitAll()
                 .and()
                 .logout()
@@ -70,17 +42,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-   @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        UserDetails user
-                = User.withDefaultPasswordEncoder()
-                        .username("boer")
-                        .password("piet")
-                        .roles("USER")
-                        .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
-    */
 }

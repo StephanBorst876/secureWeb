@@ -38,20 +38,20 @@ public class Klant implements Serializable{
     public Klant() {
     }
 
-    public Klant(String voornaam, String tussenvoegsel, String achternaam, Account account) {
-        this.voornaam = voornaam;
-        this.tussenvoegsel = tussenvoegsel;
-        this.achternaam = achternaam;
-        this.account = account;
-    }
-
-    public Klant(String voornaam, String achternaam, Account account) {
-        this.voornaam = voornaam;
-        this.tussenvoegsel = null;
-        this.achternaam = achternaam;
-        this.account = account;
-
-    }
+//    public Klant(String voornaam, String tussenvoegsel, String achternaam, Account account) {
+//        this.voornaam = voornaam;
+//        this.tussenvoegsel = tussenvoegsel;
+//        this.achternaam = achternaam;
+//        this.account = account;
+//    }
+//
+//    public Klant(String voornaam, String achternaam, Account account) {
+//        this.voornaam = voornaam;
+//        this.tussenvoegsel = null;
+//        this.achternaam = achternaam;
+//        this.account = account;
+//
+//    }
 
     /**
      * @return the id

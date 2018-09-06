@@ -12,8 +12,8 @@
         <ul>
             <li><a th:href="@{/main}">Home</a></li>
             <li><a th:href="@{/klanten}">Klanten</a></li>
-            <li><a th:href="@{/bezorgadres}">Bezorgadres</a></li>
-            <li><a th:href="@{/factuuradres}">Factuuradres</a></li>
+            <li><a th:href="@{/bezorgadres/{id} (id=${klant.id})}">Bezorgadres</a></li>
+            <li><a th:href="@{/factuuradres/{id} (id=${klant.id})}">Factuuradres</a></li>
             <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
         </ul>
 
@@ -112,7 +112,7 @@
 
             </form> 
 
-            <form name="klantVerwijder" th:action="@{/klant/verwijder}" method="post" th:hidden="true">
+            <form name="klantVerwijder" th:action="@{/klant/verwijder/{id} (id=${klant.id})}" method="post" th:hidden="true">
                 <input type="submit" value="Klant verwijderen"/>
             </form> 
         </fieldset>

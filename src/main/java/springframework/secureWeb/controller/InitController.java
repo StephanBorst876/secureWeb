@@ -7,30 +7,31 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import springframework.secureWeb.data.AccountRepository;
 import springframework.secureWeb.domein.Account;
-import springframework.secureWeb.domein.NavBar;
-
 
 /**
  *
  * @author FeniksBV
  */
 @Controller
-public class MainController {
+public class InitController {
 
     @SuppressWarnings("unused")
     private final AccountRepository accountRepo;
 
     @Autowired
-    public MainController(AccountRepository accountRepo) {
+    public InitController(AccountRepository accountRepo) {
         this.accountRepo = accountRepo;
     }
 
-    @GetMapping("/main")
-    public String Main(Model model, Authentication authentication) {
+    @GetMapping("/init")
+    public String Initialize(Model model, Authentication authentication) {
 
+        //
+        // Deze controller wordt eenmalig doorlopen, direct na het inloggen
+        // Enige taak is het zetten van de sessionAttribute accountRole
+        //
         String userNaam = authentication.getName();
         Account account = accountRepo.findByuserNaam(userNaam);
-        
         String rol;
         if (account != null) {
             rol = account.getRol().toString();
@@ -38,9 +39,7 @@ public class MainController {
             // Gaat er iets mis, zet dan maar role=klant
             rol = Account.Rol.klant.toString();
         }
-
-        model.addAttribute("navbar", new NavBar(rol));
-        return "main";
+        
+        return "redirect:/main";
     }
-
 }
