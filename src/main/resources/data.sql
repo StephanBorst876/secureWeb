@@ -25,3 +25,25 @@ INSERT INTO adres (adres_id,straatnaam,huisnummer,toevoeging,postcode,woonplaats
 VALUES (44,'bezorgstraat','11','','9999AS','bezorgplaats','BEZORGADRES',238);
 INSERT INTO adres (adres_id,straatnaam,huisnummer,toevoeging,postcode,woonplaats,adres_type,klant_id)
 VALUES (45,'factuurstraat','11','','9999AS','factuurplaats','FACTUURADRES',238);
+
+INSERT INTO bestelling (id, prijs, klant_id)
+VALUES (1, 45.20, 206);
+INSERT INTO bestelling (id, prijs, klant_id)
+VALUES (2, 12.00, 237);
+INSERT INTO bestelling (id, prijs, klant_id)
+VALUES (3, 120.00, 238);
+
+INSERT INTO bestelregel (id, artikel_id, aantal, prijs, bestelling_id)
+VALUES (1, 60, 5, 50.00, 1);
+INSERT INTO bestelregel (id, artikel_id, aantal, prijs, bestelling_id)
+VALUES (2, 63, 2, 4.50, 1);
+INSERT INTO bestelregel (id, artikel_id, aantal, prijs, bestelling_id)
+VALUES (3, 60, 2, 20.00, 2);
+INSERT INTO bestelregel (id, artikel_id, aantal, prijs, bestelling_id)
+VALUES (4, 64, 10, 37.50, 2);
+INSERT INTO bestelregel (id, artikel_id, aantal, prijs, bestelling_id)
+VALUES (5, 60, 100, 1000.00, 3);
+INSERT INTO bestelregel (id, artikel_id, aantal, prijs, bestelling_id)
+VALUES (6, 63, 100, 225.00, 3);
+INSERT INTO bestelregel (id, artikel_id, aantal, prijs, bestelling_id)
+VALUES (7, 64, 100, 3750.00, 3);
