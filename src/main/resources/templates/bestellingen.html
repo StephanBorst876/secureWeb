@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Bestellingen</title>
+	<link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+<p><img th:src="@{/images/landschap.png}" /></p>
+
+<ul>
+	<li><a th:href="@{/main}">Home</a></li>
+	<li><a th:href="@{/bestelling/nieuw}">Nieuwe bestelling</a></li>
+	<li style="float: right;"><a href="javascript: document.logoutForm.submit()">Uitloggen</a></li>
+</ul>
+
+<form method="post" name="logoutForm" th:action="@{/logout}" th:hidden="true"><input type="submit" value="Logout" />&nbsp;</form>
+
+<fieldset style="width: 75%;">
+<div>
+<h1>Bestellingen</h1>
+</div>
+
+<table id="nice">
+	<tbody>
+		<tr>
+			<th class="left">Bestellingnummer</th>
+			<th>Prijs</th>
+			<th>Klant</th>
+		</tr>
+		<div th:each="bestelling : ${bestellingen}">
+		<tr>		
+			<td class="left"><a class="link" th:href="@{/bestelling/bestelregels/{bestellingid} (bestellingid=${bestelling.id})}"> <span th:text="${bestelling.id}">id</span></a></td>
+			<td><span th:text="${bestelling.prijs}">Prijs</span></td>
+			<td><span th:text="${bestelling.klant.id}">Klant</span></td>
+		</tr>
+		</div>
+	</tbody>
+</table>
+</fieldset>
+</body>
+</html>
