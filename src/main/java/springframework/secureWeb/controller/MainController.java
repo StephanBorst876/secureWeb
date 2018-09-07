@@ -9,13 +9,14 @@ import springframework.secureWeb.data.AccountRepository;
 import springframework.secureWeb.domein.Account;
 import springframework.secureWeb.domein.NavBar;
 
-
 /**
  *
  * @author FeniksBV
  */
 @Controller
 public class MainController {
+
+    private String rol = null;
 
     @SuppressWarnings("unused")
     private final AccountRepository accountRepo;
@@ -28,15 +29,16 @@ public class MainController {
     @GetMapping("/main")
     public String Main(Model model, Authentication authentication) {
 
-        String userNaam = authentication.getName();
-        Account account = accountRepo.findByuserNaam(userNaam);
-        
-        String rol;
-        if (account != null) {
-            rol = account.getRol().toString();
-        } else {
-            // Gaat er iets mis, zet dan maar role=klant
-            rol = Account.Rol.klant.toString();
+        if (rol == null) {
+            String userNaam = authentication.getName();
+            Account account = accountRepo.findByuserNaam(userNaam);
+
+            if (account != null) {
+                rol = account.getRol().toString();
+            } else {
+                // Gaat er iets mis, zet dan maar role=klant
+                rol = Account.Rol.klant.toString();
+            }
         }
 
         model.addAttribute("navbar", new NavBar(rol));
