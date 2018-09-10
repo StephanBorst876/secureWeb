@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "Adres")
@@ -49,8 +51,10 @@ public class Adres implements Serializable{
     private int huisnummer;
     private String toevoeging;
     private String postcode;
+    @NotBlank(message = "Woonplaats is verplicht!")
     private String woonplaats;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Klant klant;
 
     public Adres() {
@@ -61,7 +65,7 @@ public class Adres implements Serializable{
         this.id = 0L;
         this.adresType = adresType;
     }
-
+    
     public void setStraatnaam(String straatnaam) {
         this.straatnaam = straatnaam;
     }
@@ -77,7 +81,7 @@ public class Adres implements Serializable{
     public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
-
+ 
     public void setWoonplaats(String woonplaats) {
         this.woonplaats = woonplaats;
     }
@@ -89,7 +93,7 @@ public class Adres implements Serializable{
     public Long getId() {
         return this.id;
     }
-
+   
     public String getStraatnaam() {
         return this.straatnaam;
     }
@@ -105,7 +109,7 @@ public class Adres implements Serializable{
     public String getPostcode() {
         return this.postcode;
     }
-
+    
     public String getWoonplaats() {
         return this.woonplaats;
     }

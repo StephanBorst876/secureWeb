@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -99,7 +100,7 @@ public class KlantController {
 
         return "redirect:/klanten";
     }
-
+/*
     @PostMapping("/klant/verwijder")
     public String verwijderKlant(@SessionAttribute("klantID") Long klantID) {
 
@@ -108,7 +109,7 @@ public class KlantController {
         // Nu terug naar de Get op /klanten om de gehele lijst te tonen
         return "redirect:/klanten";
     }
-
+*/
     @PostMapping("/klant/verwijder/{klantId}")
     public String verwijderKlant(@PathVariable("klantId") String klantId) {
 
@@ -139,10 +140,20 @@ public class KlantController {
     }
 
     @PostMapping("/klantForm")
-    public String processKlant(Model model, @Valid Klant klant, Errors errors, @Valid Adres postAdres,
+    public String processKlant(Model model, @Valid Klant klant, Errors klanterrors, @ModelAttribute("postadres")@Valid Adres postAdres,Errors adreserrors,
             @SessionAttribute("adresID") Long adresID) {
 
-        if (errors.hasErrors()) {
+        if (klanterrors.hasErrors()) {
+            model.addAttribute("klant", klant);
+            model.addAttribute("postadres", postAdres);
+            if (klant.getId() == null) {
+                return "klantNieuw";
+            } else {
+                return "klantNieuw";
+            }
+        }
+
+        if (adreserrors.hasErrors()) {
             model.addAttribute("klant", klant);
             model.addAttribute("postadres", postAdres);
             if (klant.getId() == null) {

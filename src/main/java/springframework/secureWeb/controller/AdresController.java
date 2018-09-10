@@ -83,8 +83,8 @@ public class AdresController {
     }
 
     @PostMapping("/adresForm")
-    public String processAdres(@Valid Adres adres, @ModelAttribute("klantID") Long klantID,
-            Model model, Errors errors) {
+    public String processAdres(@Valid Adres adres, Errors errors, @ModelAttribute("klantID") Long klantID,
+            Model model) {
 
         if (errors.hasErrors()) {
             if (adres.getAdresType().equals(AdresType.BEZORGADRES)) {

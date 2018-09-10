@@ -29,7 +29,7 @@ public class MainController {
     @GetMapping("/main")
     public String Main(Model model, Authentication authentication) {
 
-        if (rol == null) {
+      //  if (rol == null) {
             String userNaam = authentication.getName();
             Account account = accountRepo.findByuserNaam(userNaam);
 
@@ -39,8 +39,8 @@ public class MainController {
                 // Gaat er iets mis, zet dan maar role=klant
                 rol = Account.Rol.klant.toString();
             }
-        }
-
+      //  }
+        
         model.addAttribute("navbar", new NavBar(rol));
         return "main";
     }

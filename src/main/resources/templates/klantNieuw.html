@@ -27,10 +27,10 @@
                 <input type="hidden" th:field="*{id}"/>
                 <span class="validationError"
                       th:if="${#fields.hasErrors('voornaam')}" 
-                      th:errors="*{voornaam}">Voornaam moet ingevuld!</span>
+                      th:errors="*{voornaam}"></span>
                 <span class="validationError"
                       th:if="${#fields.hasErrors('achternaam')}" 
-                      th:errors="*{achternaam}">Achternaam moet ingevuld!</span>
+                      th:errors="*{achternaam}"></span>
 
                 <table>
                     <tr>
@@ -45,11 +45,23 @@
                         <td class=text>Achternaam : </td>
                         <td><input type="text" th:field="*{achternaam}"/></td>
                     </tr>
-
+		
+				
+				     
+                
                     <div th:object="${postadres}" >
-                        <tr><td class=text>Postadres</td>
-                            <input type="hidden" th:field="*{adresType}"/>
-                        </tr>
+               
+             
+                    <span class="validationError"
+                              th:if="${#fields.hasErrors('straatnaam')}" 
+                              th:errors="*{straatnaam}"></span>
+                              <span class="validationError"
+                              th:if="${#fields.hasErrors('woonplaats')}" 
+                              th:errors="*{woonplaats}"></span>
+                    
+              
+                       
+                 <tr><td class=text>Postadres</td>
                         <tr>
                             <td class=text>Straatnaam : </td>
                             <td><input type="text" th:field="*{straatnaam}"/></td>
@@ -70,6 +82,7 @@
                             <td class=text>Woonplaats : </td>
                             <td><input type="text" th:field="*{woonplaats}"/></td>
                         </tr>
+                        </table>
                     </div>
 
                     <tr>
