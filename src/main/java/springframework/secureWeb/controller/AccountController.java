@@ -1,5 +1,6 @@
 package springframework.secureWeb.controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +47,7 @@ public class AccountController {
     }
     
     @RequestMapping(value = "/account/muteer/{accountId}")
-    public String AccountMuteer(Model model, @PathVariable("accountId") String accountId) {
+    public String AccountMuteer(Model model, @PathVariable("accountId") String accountId, @ModelAttribute("message") String message) {
         //
         // Het omzetten van het artikelId doe ik hier, want anders geeft Spring Boot
         // (or Thymeleaf) een Exception wanneer er iets wordt aangeboden als:
@@ -79,36 +81,56 @@ public class AccountController {
     }
 
     @PostMapping("/accountNieuwForm")
-    public String processAccountNieuw(@Valid Account account, Errors errors) {
+    public String processAccountNieuw(Model model, @Valid Account account, Errors errors) {
         if (errors.hasErrors()) {
             return "accountNieuw";
         }
        
-        if(accountRepo.existsByuserNaam(account.getUserNaam())) {
-        	return "accountNieuw";
-        }
-        account.setPassword(BCrypt.hashpw(account.getPassword(),BCrypt.gensalt(12)));
-        accountRepo.save(account);
-
+        try {
+            account.setPassword(BCrypt.hashpw(account.getPassword(),BCrypt.gensalt(12)));
+            accountRepo.save(account);
+            }
+            catch(Exception ex) {
+            	String message = "unieke usernaam is verplicht!";
+            	model.addAttribute("message", message);
+            	  return "accountNieuw";
+            }
         // Nu terug naar de Get op /accounts om de gehele lijst te tonen
         return "redirect:/accounts";
     }
     
     @PostMapping("/accountMuteerForm")
-    public String processAccountMuteer(@Valid Account account, Errors errors) {
+    public String processAccountMuteer(Model model, @Valid Account account, Errors errors) {
         if (errors.hasErrors()) {
+        	model.addAttribute("account", account);
             return "accountmuteer";
         }
        
-        if(accountRepo.existsByuserNaam(account.getUserNaam())) {
-        	return "accountmuteer";
-        }
+    //    if(accountRepo.existsByuserNaam(account.getUserNaam())) {
+ //       	return "accountmuteer";
+  //      }
+        try {
         account.setPassword(BCrypt.hashpw(account.getPassword(),BCrypt.gensalt(12)));
         accountRepo.save(account);
-
+        }
+        catch(Exception ex) {
+        	String message = "unieke usernaam is verplicht!";
+        	model.addAttribute("message", message);
+        	  return "accountmuteer";
+        }
         // Nu terug naar de Get op /accounts om de gehele lijst te tonen
         return "redirect:/accounts";
     }
     
+    @PostMapping("/account/verwijder/{accountId}")
+    public String verwijderAccount(@PathVariable("accountId") String accountId) {
+
+        Long id = Long.valueOf(accountId);
+        accountRepo.deleteById(id);
+
+        // Nu terug naar de Get op /klanten om de gehele lijst te tonen
+        return "redirect:/accounts";
+    }
+
 	
 }

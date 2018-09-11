@@ -36,7 +36,7 @@ public class Account implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", length = 45)
+    @Column(name = "username", length = 45, unique = true)
     @ColumnDefault("null")
     @NotBlank(message = "Usernaam = verplicht!")
     private String userNaam;

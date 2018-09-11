@@ -23,13 +23,20 @@
 
 	<fieldset style="width: 75%;">
 		<div>
-			<h1>Account  wijzigen</h1>
+			<h1>Account wijzigen</h1>
+			 <p th:text="${message}" />
 		</div>
-		<form name="accountMuteerForm" th:action="@{/accountMuteerForm}" method="post"
-			th:object="${account}">
+
+		<form name="accountMuteerForm" th:action="@{/accountMuteerForm}"
+			method="post" th:object="${account}">
 			<input type="hidden" th:field="*{id}" /> <span
 				class="validationError" th:if="${#fields.hasErrors('userNaam')}"
-				th:errors="*{userNaam}">usernaam moet ingevuld!</span>
+				th:errors="*{userNaam}">usernaam moet ingevuld!</span> <span
+				class="validationError" th:if="${#fields.hasErrors('password')}"
+				th:errors="*{password}">password moet ingevuld!</span>
+
+
+
 			<table>
 				<tr>
 					<td class=text>usernaam :</td>
@@ -42,11 +49,10 @@
 				<tr>
 					<td class=text>Rol :</td>
 					<td class=left><select th:field="*{rol}">
-					  <option th:each="rol : ${T(springframework.secureWeb.domein.Account.Rol).values()}"
-            th:value="${rol}"
-            th:text="${rol}">
-    </option>
-							
+							<option
+								th:each="rol : ${T(springframework.secureWeb.domein.Account.Rol).values()}"
+								th:value="${rol}" th:text="${rol}"></option>
+
 					</select></td>
 				</tr>
 				<tr>
@@ -58,13 +64,32 @@
 					<td></td>
 					<td>
 						<ul>
-							<li><a href="javascript: document.accountMuteerForm.submit()">OK</a></li>
+							<li><a
+								href="javascript: document.accountMuteerForm.submit()">OK</a></li>
+							  <li onclick="bevestigKeuze()"><a>Verwijder</a></li>
 						</ul>
 					</td>
 				</tr>
 			</table>
 
 		</form>
+
+		<form name="accountVerwijder"
+			th:action="@{/account/verwijder/{id} (id=${account.id})}"
+			method="post" th:hidden="true">
+			<input type="submit" value="Account verwijderen" />
+		</form>
 	</fieldset>
+
+	<script type="text/javascript">
+		function bevestigKeuze() {
+			if (confirm('Wilt u deze account echt verwijderen?')) {
+				document.accountVerwijder.submit();
+			} else {
+				return false;
+			}
+		}
+	</script>
+
 </body>
 </html>

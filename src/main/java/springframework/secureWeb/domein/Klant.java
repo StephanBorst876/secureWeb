@@ -10,6 +10,8 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Klant implements Serializable{
@@ -31,8 +33,9 @@ public class Klant implements Serializable{
     @ColumnDefault("null")
     @NotBlank(message = "Achternaam is verplicht!")
     private String achternaam;
-
+    
     @OneToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Account account;
 
     public Klant() {

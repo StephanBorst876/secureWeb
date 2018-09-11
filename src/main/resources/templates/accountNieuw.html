@@ -24,7 +24,10 @@
 	<fieldset style="width: 75%;">
 		<div>
 			<h1>Account invoeren</h1>
+					 <p th:text="${message}" />
 		</div>
+		
+
 		<form name="accountNieuwForm" th:action="@{/accountNieuwForm}" method="post"
 			th:object="${account}">
 			<input type="hidden" th:field="*{id}" />

@@ -165,7 +165,7 @@ public class KlantController {
 
         Klant klantDB = klantRepo.save(klant);
 
-        postAdres.setId(adresID); // Bewaard in sessionAttr
+        postAdres.setId(adresID); // Bewaard in sessionAttr 
         postAdres.setKlant(klantDB);
         adresRepo.save(postAdres);
 

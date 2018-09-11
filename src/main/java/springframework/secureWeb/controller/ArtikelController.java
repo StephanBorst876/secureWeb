@@ -71,7 +71,7 @@ public class ArtikelController {
 
         model.addAttribute("artikel", new Artikel());
 
-        return "artikel";
+        return "artikelNieuw";
     }
 
     @PostMapping("/artikelForm")
@@ -82,6 +82,16 @@ public class ArtikelController {
         artikelRepo.save(artikel);
 
         // Nu terug naar de Get op /artikelen om de gehele lijst te tonen
+        return "redirect:/artikelen";
+    }
+    
+    @PostMapping("/artikel/verwijder/{artikelId}")
+    public String verwijderArtikel(@PathVariable("artikelId") String artikelId) {
+
+        Long id = Long.valueOf(artikelId);
+        artikelRepo.deleteById(id);
+
+        // Nu terug naar de Get op /klanten om de gehele lijst te tonen
         return "redirect:/artikelen";
     }
 }
