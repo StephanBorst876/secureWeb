@@ -2,6 +2,7 @@ package springframework.secureWeb.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +32,9 @@ public class MainController {
 
       //  if (rol == null) {
             String userNaam = authentication.getName();
-            Account account = accountRepo.findByuserNaam(userNaam);
-
+              Account account = accountRepo.findByuserNaam(userNaam);
+      
+    
             if (account != null) {
                 rol = account.getRol().toString();
             } else {

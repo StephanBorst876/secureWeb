@@ -1,12 +1,14 @@
 package springframework.secureWeb;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -39,7 +41,18 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if (BCrypt.checkpw(password, inlogAccount.getPassword())) {
             // use the credentials
             // and authenticate against the third-party system
-            return new UsernamePasswordAuthenticationToken(name, password, new ArrayList<>());
+        	
+        	
+        	 SimpleGrantedAuthority r = new  SimpleGrantedAuthority ("ROLE_"+ inlogAccount.getRol().toString().toUpperCase());
+           //  System.out.println(r);            
+             inlogAccount.setGrantedAuthorities(r);
+             Collection<? extends GrantedAuthority> authorities = inlogAccount.getAuthorities();
+             
+        	// System.out.println(inlogAccount.getUserNaam() + inlogAccount.getAuthorities());
+        	 
+            return new UsernamePasswordAuthenticationToken(name, password, authorities);
+        	
+            
         } else {
             return null;
         }
@@ -49,4 +62,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
+    
+  
 }

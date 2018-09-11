@@ -14,6 +14,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomAuthenticationProvider authProvider;
+    
 
     String[] staticResources = {
         "/styles.css",
@@ -29,6 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/artikelen") 
+                .hasAuthority("ROLE_BEHEERDER")
                 .antMatchers(staticResources).permitAll()
                 .anyRequest().authenticated()
                 .and()

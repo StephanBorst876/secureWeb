@@ -1,6 +1,10 @@
 package springframework.secureWeb.domein;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,12 +12,16 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-public class Account implements Serializable {
+public class Account implements Serializable, UserDetails {
 
     public enum Rol {
         klant, medewerker, beheerder;
@@ -49,9 +57,12 @@ public class Account implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(length = 15)
     private Rol rol;
+    @Transient
+    private List<SimpleGrantedAuthority> authorities=new ArrayList<>();;
 
+    
     public Account() {
-
+    	
     }
 
     /**
@@ -115,5 +126,49 @@ public class Account implements Serializable {
         }
         return true;
     }
+    
+    
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
+    }
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return this.userNaam;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+  public void  setGrantedAuthorities(SimpleGrantedAuthority drol){
+	  this.authorities.add(drol);
+  }
+
+
+
+	
 }

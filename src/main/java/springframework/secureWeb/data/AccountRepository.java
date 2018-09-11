@@ -9,6 +9,6 @@ public interface AccountRepository extends CrudRepository<Account, Long>{
 
 	 boolean existsByuserNaam(@Nullable String userNaam);
 	 
-	 Account findByuserNaam(@Nullable String userNaam);
+	 Account findByuserNaam(@Nullable String userNaam);;
 	 
 }
