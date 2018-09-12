@@ -25,7 +25,9 @@
             </div> 
             <form name="klantForm" th:action="@{/klantForm}" method="post" th:object="${klant}">
                 <input type="hidden" th:field="*{id}"/>
-                <span class="validationError"
+         
+		
+     <span class="validationError"
                       th:if="${#fields.hasErrors('voornaam')}" 
                       th:errors="*{voornaam}"></span>
                 <span class="validationError"
@@ -92,15 +94,55 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td>
-                            <ul>
-                                <li><a href="javascript: document.klantForm.submit()">Toevoegen</a></li>
-                            </ul>
-                        </td>
+                       
                     </tr>
                 </table>
 
-            </form> 
+      
+     
+        <div>
+			<h1>Account aanmaken</h1>
+					 <p th:text="${message}" />
+		</div>
+		  <div th:object="${account}" >
+
+			 <span
+				class="validationError" th:if="${#fields.hasErrors('userNaam')}"
+				th:errors="*{userNaam}">usernaam moet ingevuld!</span>
+				 <span
+				class="validationError" th:if="${#fields.hasErrors('password')}"
+				th:errors="*{password}">password moet ingevuld!</span>
+			<table>
+				<tr>
+					<td class=text>usernaam :</td>
+					<td><input type="text" th:field="*{userNaam}" /></td>
+				</tr>
+				<tr>
+					<td class=text>Password :</td>
+					<td><input type="password" th:field="*{password}" /></td>
+				</tr>
+				<tr>
+					<td class=text>Rol :</td>
+					<td class=left><select name="rol" id="rol">
+							<option value="klant">klant</option>
+						</select></td>
+				</tr>
+				<tr>
+					<td colspan=2>
+						<hr>
+					</td>
+				
+				</tr>
+				<tr>
+					 <td>
+                            <ul >
+                                <li ><a  href="javascript: document.klantForm.submit()" >Toevoegen</a></li>
+                            </ul>
+                        </td>
+			</tr>
+</table>
+</div>
+      </form> 
 
         </fieldset>
     </body>

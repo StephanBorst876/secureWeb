@@ -91,7 +91,7 @@ public class AccountController {
             accountRepo.save(account);
             }
             catch(Exception ex) {
-            	String message = "unieke usernaam is verplicht!";
+            	String message = "usernaam bestaat al kies een andere!";
             	model.addAttribute("message", message);
             	  return "accountNieuw";
             }
@@ -114,7 +114,7 @@ public class AccountController {
         accountRepo.save(account);
         }
         catch(Exception ex) {
-        	String message = "unieke usernaam is verplicht!";
+        	String message = "usernaam bestaat al kies een andere!";
         	model.addAttribute("message", message);
         	  return "accountmuteer";
         }
