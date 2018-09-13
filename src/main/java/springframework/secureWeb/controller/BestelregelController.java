@@ -3,13 +3,8 @@ package springframework.secureWeb.controller;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +18,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import springframework.secureWeb.data.ArtikelRepository;
 import springframework.secureWeb.data.BestellingRepository;
 import springframework.secureWeb.data.BestelregelRepository;
-import springframework.secureWeb.domein.Adres;
 import springframework.secureWeb.domein.Artikel;
 import springframework.secureWeb.domein.Bestelling;
 import springframework.secureWeb.domein.Bestelregel;
 
-@SessionAttributes({"bestellingIdLong" , "artikelId"})
+@SessionAttributes({ "bestellingIdLong", "artikelId" })
 @Controller
 public class BestelregelController {
 
@@ -61,12 +55,12 @@ public class BestelregelController {
 			return "redirect:/bestellingen";
 		}
 	}
-	
+
 	@GetMapping("/bestelregel/nieuw/{bestellingId}")
 	public String bestelregelNieuw(Model model, @PathVariable("bestellingId") String bestellingId) {
 		long bestellingIdLong = Long.valueOf(bestellingId);
-		Bestelling bestelling =bestellingRepo.findById(bestellingIdLong).get();
-		
+		Bestelling bestelling = bestellingRepo.findById(bestellingIdLong).get();
+
 		List<Artikel> artikelList = new ArrayList();
 		artikelRepo.findAll().forEach(i -> artikelList.add(i));
 
@@ -80,37 +74,35 @@ public class BestelregelController {
 	}
 
 	@PostMapping("/bestelregelForm")
-	public String processBestelregel(Bestelregel bestelregel, @ModelAttribute("bestellingIdLong") Long bestellingIdLong, @ModelAttribute("artikel") Artikel artikel, @SessionAttribute("artikelId") long artikelId) {
-		Bestelling bestelling=bestellingRepo.findById(bestellingIdLong).get();
+	public String processBestelregel(Bestelregel bestelregel, @ModelAttribute("bestellingIdLong") Long bestellingIdLong,
+			@ModelAttribute("artikel") Artikel artikel, @SessionAttribute("artikelId") long artikelId) {
+		Bestelling bestelling = bestellingRepo.findById(bestellingIdLong).get();
 		bestelregel.setBestelling(bestelling);
-		System.out.println("artikelId= "+artikelId);
-		/*Artikel artikel=new Artikel();
-		artikel.setId((long) 60);
-		artikel.setPrijs(new BigDecimal("10.00"));
-		bestelregel.setArtikel(artikel); //dit moet nog het juiste artikel worden*/
+		/*
+		 * Artikel artikel=new Artikel(); artikel.setId((long) 60); artikel.setPrijs(new
+		 * BigDecimal("10.00")); bestelregel.setArtikel(artikel); //dit moet nog het
+		 * juiste artikel worden
+		 */
 		artikel.setId(artikelId);
 		artikel.setPrijs(new BigDecimal("10.00"));
 		artikel.setVoorraad(878);
 		artikel.setNaam("Komijnen Kaas");
 		bestelregel.setArtikel(artikel);
-		bestelregel.setPrijs(artikel.getPrijs().multiply(new BigDecimal(""+bestelregel.getAantal())));
-		System.out.println("bestellingid: "+bestelling.getId()+" & prijs: "+bestelregel.getPrijs());
+		bestelregel.setPrijs(artikel.getPrijs().multiply(new BigDecimal("" + bestelregel.getAantal())));
 		bestelregelRepo.save(bestelregel);
-		wijzigBestellingPrijs(bestelling,bestelregel.getPrijs());
+		wijzigBestellingPrijs(bestelling, bestelregel.getPrijs());
 		wijzigArtikelVoorraad(artikel, bestelregel.getAantal());
-		return "redirect:/main";//dit moet nog aangepast worden
+		return "redirect:/main";// dit moet nog aangepast worden
 	}
-	
+
 	private void wijzigBestellingPrijs(Bestelling bestelling, BigDecimal prijs) {
-		System.out.println("bestellingId in regel 105: "+bestelling.getId());
-		BigDecimal initielePrijs=bestelling.getPrijs();
-		System.out.println("prijs bestelling voor aanpassen prijs: "+initielePrijs);
+		BigDecimal initielePrijs = bestelling.getPrijs();
 		bestelling.setPrijs(initielePrijs.add(prijs));
 		bestellingRepo.save(bestelling);
 	}
-	
+
 	private void wijzigArtikelVoorraad(Artikel artikel, int aantal) {
-		artikel.setVoorraad(artikel.getVoorraad()-aantal);
+		artikel.setVoorraad(artikel.getVoorraad() - aantal);
 		artikelRepo.save(artikel);
 	}
 
