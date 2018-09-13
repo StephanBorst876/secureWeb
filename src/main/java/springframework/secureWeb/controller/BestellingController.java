@@ -74,12 +74,12 @@ public class BestellingController {
 	@PostMapping("/bestelling/verwijder/{bestellingId}")
 	public String bestellingVerwijder(@PathVariable ("bestellingId") String bestellingId) {
 		long bestellingIdLong=Long.valueOf(bestellingId);
-		bestellingRepo.deleteById(bestellingIdLong);
 		
 		List<Bestelregel> bestelregelList = bestelregelRepo.findBestelregelByBestelling(bestellingIdLong);
 		for (Bestelregel bestelregel : bestelregelList) {
 			wijzigArtikelVoorraad(bestelregel.getArtikel(), bestelregel.getAantal());
 		}
+		bestellingRepo.deleteById(bestellingIdLong);
 		return "redirect:/bestelling";
 	}
 	
