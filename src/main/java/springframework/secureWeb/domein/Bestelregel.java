@@ -23,8 +23,7 @@ public class Bestelregel implements Serializable {
 	private int id;
 	
 	@ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-	private Artikel artikel;
+    private Artikel artikel;
 	
 	@ColumnDefault("0")
 	private int aantal;
@@ -33,6 +32,7 @@ public class Bestelregel implements Serializable {
 	private BigDecimal prijs;
 	
 	@ManyToOne
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Bestelling bestelling;
 
 	public int getId() {
