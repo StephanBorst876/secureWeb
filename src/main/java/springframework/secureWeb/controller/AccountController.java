@@ -123,11 +123,20 @@ public class AccountController {
     }
     
     @PostMapping("/account/verwijder/{accountId}")
-    public String verwijderAccount(@PathVariable("accountId") String accountId) {
-
+    public String verwijderAccount(Model model, @PathVariable("accountId") String accountId) {
+    	try {
         Long id = Long.valueOf(accountId);
         accountRepo.deleteById(id);
+    	}catch(Exception ex) {
+    		List<Account> accountList = new ArrayList<>();
+            accountRepo.findAll().forEach(i -> accountList.add(i));
 
+            model.addAttribute("accounts", accountList);
+    		
+    		String message = "kan account niet verwijderen";
+        	model.addAttribute("message", message);
+    		return "accounts";
+    	}
         // Nu terug naar de Get op /klanten om de gehele lijst te tonen
         return "redirect:/accounts";
     }

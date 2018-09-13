@@ -22,76 +22,85 @@ import springframework.secureWeb.domein.Artikel;
 @Controller
 public class ArtikelController {
 
-    @SuppressWarnings("unused")
-    private final ArtikelRepository artikelRepo;
+	@SuppressWarnings("unused")
+	private final ArtikelRepository artikelRepo;
 
-    @Autowired
-    public ArtikelController(ArtikelRepository artikelRepo) {
-        this.artikelRepo = artikelRepo;
-    }
+	@Autowired
+	public ArtikelController(ArtikelRepository artikelRepo) {
+		this.artikelRepo = artikelRepo;
+	}
 
-    @GetMapping("/artikelen")
-    public String Artikelen(Model model) {
-        List<Artikel> artikelList = new ArrayList<>();
-        artikelRepo.findAll().forEach(i -> artikelList.add(i));
+	@GetMapping("/artikelen")
+	public String Artikelen(Model model) {
+		List<Artikel> artikelList = new ArrayList<>();
+		artikelRepo.findAll().forEach(i -> artikelList.add(i));
+		
+		model.addAttribute("artikelen", artikelList);
 
-        model.addAttribute("artikelen", artikelList);
+		return "artikelen";
+	}
 
-        return "artikelen";
-    }
+	@RequestMapping(value = "/artikel/muteer/{artikelId}")
+	public String ArtikelMuteer(Model model, @PathVariable("artikelId") String artikelId) {
+		//
+		// Het omzetten van het artikelId doe ik hier, want anders geeft Spring Boot
+		// (or Thymeleaf) een Exception wanneer er iets wordt aangeboden als:
+		// http://.../artikel/muteer/abc, met abc geen Long format
+		//
+		try {
+			Long id = Long.valueOf(artikelId);
+			Optional<Artikel> optionalArt = artikelRepo.findById(id);
+			if (optionalArt.isPresent()) {
+				Artikel artikel = optionalArt.get();
+				if (artikel != null) {
+					model.addAttribute("artikel", artikel);
+					return "artikel";
+				}
+			}
 
-    @RequestMapping(value = "/artikel/muteer/{artikelId}")
-    public String ArtikelMuteer(Model model, @PathVariable("artikelId") String artikelId) {
-        //
-        // Het omzetten van het artikelId doe ik hier, want anders geeft Spring Boot
-        // (or Thymeleaf) een Exception wanneer er iets wordt aangeboden als:
-        // http://.../artikel/muteer/abc, met abc geen Long format
-        //
-        try {
-            Long id = Long.valueOf(artikelId);
-            Optional<Artikel> optionalArt = artikelRepo.findById(id);
-            if (optionalArt.isPresent()) {
-                Artikel artikel = optionalArt.get();
-                if (artikel != null) {
-                    model.addAttribute("artikel", artikel);
-                    return "artikel";
-                }
-            }
+		} catch (NumberFormatException ex) {
+			return "artikelen";
+		}
 
-        } catch  (NumberFormatException ex) {
+		return "redirect:/artikelen";
 
-        }
+	}
 
-        return "redirect:/artikelen";
+	@GetMapping("/artikel/nieuw")
+	public String ArtikelNieuw(Model model) {
 
-    }
+		model.addAttribute("artikel", new Artikel());
 
-    @GetMapping("/artikel/nieuw")
-    public String ArtikelNieuw(Model model) {
+		return "artikelNieuw";
+	}
 
-        model.addAttribute("artikel", new Artikel());
+	@PostMapping("/artikelForm")
+	public String processArtikel(@Valid Artikel artikel, Errors errors) {
+		if (errors.hasErrors()) {
+			return "artikel";
+		}
+		artikelRepo.save(artikel);
 
-        return "artikelNieuw";
-    }
+		// Nu terug naar de Get op /artikelen om de gehele lijst te tonen
+		return "redirect:/artikelen";
+	}
 
-    @PostMapping("/artikelForm")
-    public String processArtikel(@Valid Artikel artikel, Errors errors) {
-        if (errors.hasErrors()) {
-            return "artikel";
-        }
-        artikelRepo.save(artikel);
-
-        // Nu terug naar de Get op /artikelen om de gehele lijst te tonen
-        return "redirect:/artikelen";
-    }
-    
-    @PostMapping("/artikel/verwijder/{artikelId}")
-    public String verwijderArtikel(@PathVariable("artikelId") String artikelId) {
-
-        Long id = Long.valueOf(artikelId);
-        artikelRepo.deleteById(id);
-
-        // Nu terug naar de Get op /klanten om de gehele lijst te tonen
-        return "redirect:/artikelen";
-    }
+	@PostMapping("/artikel/verwijder/{artikelId}")
+	public String verwijderArtikel(Model model, @PathVariable("artikelId") String artikelId) {
+		try {
+			Long id = Long.valueOf(artikelId);
+			artikelRepo.deleteById(id);
+		} catch (Exception ex) {
+			String message = "Dit artikel kan niet verwijderd worden";
+			model.addAttribute("message", message);
+			
+			List<Artikel> artikelList = new ArrayList<>();
+			artikelRepo.findAll().forEach(i -> artikelList.add(i));
+			
+			model.addAttribute("artikelen", artikelList);
+			return "artikelen";
+		}
+		// Nu terug naar de Get op /klanten om de gehele lijst te tonen
+		return "redirect:/artikelen";
+	}
 }

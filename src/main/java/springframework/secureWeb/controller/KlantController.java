@@ -119,11 +119,20 @@ public class KlantController {
     }
 */
     @PostMapping("/klant/verwijder/{klantId}")
-    public String verwijderKlant(@PathVariable("klantId") String klantId) {
-
+    public String verwijderKlant(Model model, @PathVariable("klantId") String klantId) {
+    	try {
         Long id = Long.valueOf(klantId);
         klantRepo.deleteById(id);
+    	}catch(Exception ex) {
+    		 List<Klant> klantList = new ArrayList<>();
+    	        klantRepo.findAll().forEach(i -> klantList.add(i));
 
+    	        model.addAttribute("klanten", klantList);
+    	        String message = "Deze klant kan niet verwijderd worden";
+    			model.addAttribute("message", message);
+    		
+    		return "klanten";
+    	}
         // Nu terug naar de Get op /klanten om de gehele lijst te tonen
         return "redirect:/klanten";
     }
