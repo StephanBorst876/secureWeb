@@ -28,27 +28,11 @@
            <form name="bestelregelForm" th:action="@{/bestelregelForm}" method="post" th:object="${bestelregel}">
                 <input type="hidden" th:field="*{id}"/>
                 	<table>
-                		<div th:object="${artikel}">
-                			<td class=text>Artikelid (werkt nog niet) : </td>
-                			<td><input type="text" th:field="*{id}"/></td>
-                		</div>
-                		
-                			<tr>
-                    			<!--<td class=text>Artikel :</td>
-                    			<td><input type="text" th:field="*{naam}"/></td>             		
-								<td th:field="*{naam}">
-									
-									<select>
-										<div th:each="artikel : ${artikelen}">
-											<option>												
-													<input type="text" th:field="*{naam}"/>
-													<span th:text="${artikel.naam}">
-											</option>
-										</div>
-									</select>-->
-								</td>	
-                 			</tr>  		
-                		</div>
+                		<tr><td class=left><select th:field="*{artikel}">
+                				<option th:each="artikel : ${artikelen}" th:value="${artikel.id}" th:text="${artikel.naam}">
+                				</option></select></td></tr>
+                				<tr><td class=text>test</td></tr>
+              
                     	<tr>
                         	<td class=text>Aantal : </td>
                         	<td><input type="number" min="1" th:field="*{aantal}"/></td>

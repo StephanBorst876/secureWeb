@@ -68,30 +68,19 @@ public class BestelregelController {
 		model.addAttribute("bestellingIdLong", bestellingIdLong);
 		model.addAttribute("bestelregel", new Bestelregel());
 		model.addAttribute("artikel", new Artikel());
-		model.addAttribute("artikelId", 60L);
+		//model.addAttribute("artikelId", 60L);
 
 		return "bestelregelNieuw";
 	}
 
 	@PostMapping("/bestelregelForm")
-	public String processBestelregel(Bestelregel bestelregel, @ModelAttribute("bestellingIdLong") Long bestellingIdLong,
-			@ModelAttribute("artikel") Artikel artikel, @SessionAttribute("artikelId") long artikelId) {
+	public String processBestelregel(Model model, Bestelregel bestelregel, @ModelAttribute("bestellingIdLong") Long bestellingIdLong) {
 		Bestelling bestelling = bestellingRepo.findById(bestellingIdLong).get();
 		bestelregel.setBestelling(bestelling);
-		/*
-		 * Artikel artikel=new Artikel(); artikel.setId((long) 60); artikel.setPrijs(new
-		 * BigDecimal("10.00")); bestelregel.setArtikel(artikel); //dit moet nog het
-		 * juiste artikel worden
-		 */
-		artikel.setId(artikelId);
-		artikel.setPrijs(new BigDecimal("10.00"));
-		artikel.setVoorraad(878);
-		artikel.setNaam("Komijnen Kaas");
-		bestelregel.setArtikel(artikel);
-		bestelregel.setPrijs(artikel.getPrijs().multiply(new BigDecimal("" + bestelregel.getAantal())));
+		bestelregel.setPrijs(bestelregel.getArtikel().getPrijs().multiply(new BigDecimal("" + bestelregel.getAantal())));
 		bestelregelRepo.save(bestelregel);
 		wijzigBestellingPrijs(bestelling, bestelregel.getPrijs());
-		wijzigArtikelVoorraad(artikel, bestelregel.getAantal());
+		wijzigArtikelVoorraad(bestelregel.getArtikel(), bestelregel.getAantal());
 		return "redirect:/main";// dit moet nog aangepast worden
 	}
 
