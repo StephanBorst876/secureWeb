@@ -31,8 +31,15 @@
 
                 <span class="validationError"
                       th:if="${#fields.hasErrors('straatnaam')}" 
-                      th:errors="*{voornaam}">Straatnaam moet ingevuld!</span>
-
+                      th:errors="*{straatnaam}">straatnaam is verplicht!]</span>
+			      <span class="validationError"
+                              th:if="${#fields.hasErrors('woonplaats')}" 
+                              th:errors="*{woonplaats}">woonplaats is verplicht!</span>
+                         
+                
+               
+               
+             
                 <table>
                     <tr>
                         <td class=text>Straatnaam : </td>

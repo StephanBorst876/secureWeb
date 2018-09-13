@@ -83,14 +83,17 @@ public class AdresController {
     }
 
     @PostMapping("/adresForm")
-    public String processAdres(@Valid Adres adres, Errors errors, @ModelAttribute("klantID") Long klantID,
+    public String processAdres(@ModelAttribute("adres")@Valid Adres adres, Errors errors, @ModelAttribute("klantID") Long klantID,
             Model model) {
 
         if (errors.hasErrors()) {
+        		model.addAttribute("adres",adres) 	;
+        		model.addAttribute("klant_id", klantID);
             if (adres.getAdresType().equals(AdresType.BEZORGADRES)) {
-                return "redirect:/bezorgadres";
+            
+                return "adres";
             } else {
-                return "redirect:/factuuradres";
+                return "adres";
             }
         }
 

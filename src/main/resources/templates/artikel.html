@@ -51,12 +51,30 @@
                         <td>
                             <ul>
                                 <li><a href="javascript: document.artikelForm.submit()">OK</a></li>
+                                 <li onclick="bevestigKeuze()"><a>Verwijder</a></li>
                             </ul>
                         </td>
                     </tr>
                 </table>
 
             </form> 
-        </fieldset>
+            <form name="artikelVerwijder"
+			th:action="@{/artikel/verwijder/{id} (id=${artikel.id})}"
+			method="post" th:hidden="true">
+			<input type="submit" value="Artikel verwijderen" />
+		</form>
+	</fieldset>
+
+	<script type="text/javascript">
+		function bevestigKeuze() {
+			if (confirm('Wilt u dit artikel echt verwijderen?')) {
+				document.artikelVerwijder.submit();
+			} else {
+				return false;
+			}
+		}
+	</script>
+            
+
     </body>
 </html>
