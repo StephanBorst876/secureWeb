@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Bestelregel beheer</title>
+        <link rel="stylesheet" th:href="@{/styles.css}" />
+    </head>
+    <body>
+        <img th:src="@{/images/landschap.png}"/>
+
+        <ul>
+            <li><a th:href="@{/main}">Home</a></li>
+            <li><a th:href="@{/bestelling}">Bestelling</a></li>
+            <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
+        </ul>
+
+        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+            <input type="submit" value="Logout"/>
+        </form> 
+
+        <fieldset style="width:75%;">
+            <div>
+                <h1>Bestelregel toevoegen</h1>
+            </div> 
+            
+            
+           <form name="bestelregelForm" th:action="@{/bestelregelForm}" method="post" th:object="${bestelregel}">
+                <input type="hidden" th:field="*{id}"/>
+                	<table>
+                		<div th:object="${artikel}">
+                			<td class=text>Artikelid (werkt nog niet) : </td>
+                			<td><input type="text" th:field="*{id}"/></td>
+                		</div>
+                		
+                			<tr>
+                    			<!--<td class=text>Artikel :</td>
+                    			<td><input type="text" th:field="*{naam}"/></td>             		
+								<td th:field="*{naam}">
+									
+									<select>
+										<div th:each="artikel : ${artikelen}">
+											<option>												
+													<input type="text" th:field="*{naam}"/>
+													<span th:text="${artikel.naam}">
+											</option>
+										</div>
+									</select>-->
+								</td>	
+                 			</tr>  		
+                		</div>
+                    	<tr>
+                        	<td class=text>Aantal : </td>
+                        	<td><input type="number" min="1" th:field="*{aantal}"/></td>
+                    	</tr>
+	                    <tr>
+	                        <td colspan=2>
+	                            <hr>
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <td></td>
+	                        <td>
+	                            <ul>
+	                                <li><a href="javascript: document.bestelregelForm.submit()">Toevoegen</a></li>
+	                            </ul>
+	                        </td>
+	                    </tr>
+                </table>
+
+            </form>
+
+        </fieldset>
+    </body>
+</html>

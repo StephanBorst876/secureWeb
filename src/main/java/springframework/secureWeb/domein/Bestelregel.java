@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name="bestelregel")
@@ -21,6 +23,7 @@ public class Bestelregel implements Serializable {
 	private int id;
 	
 	@ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	private Artikel artikel;
 	
 	@ColumnDefault("0")

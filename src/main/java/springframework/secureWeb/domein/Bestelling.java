@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Bestelling implements Serializable {
@@ -22,6 +24,7 @@ public class Bestelling implements Serializable {
 	private BigDecimal prijs;
 
 	@ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	private Klant klant;
 	
 	public Long getId() {
