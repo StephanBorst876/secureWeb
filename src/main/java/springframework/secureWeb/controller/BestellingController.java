@@ -12,9 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import springframework.secureWeb.data.ArtikelRepository;
 import springframework.secureWeb.data.BestellingRepository;
+import springframework.secureWeb.data.BestelregelRepository;
 import springframework.secureWeb.data.KlantRepository;
+import springframework.secureWeb.domein.Artikel;
 import springframework.secureWeb.domein.Bestelling;
+import springframework.secureWeb.domein.Bestelregel;
 
 @Controller
 public class BestellingController {
@@ -22,11 +26,15 @@ public class BestellingController {
 	@SuppressWarnings("unused")
 	private final BestellingRepository bestellingRepo;
 	private final KlantRepository klantRepo;
+	private final BestelregelRepository bestelregelRepo;
+	private final ArtikelRepository artikelRepo;
 
 	@Autowired
-	public BestellingController(BestellingRepository bestellingRepo, KlantRepository klantRepo) {
+	public BestellingController(BestellingRepository bestellingRepo, KlantRepository klantRepo, BestelregelRepository bestelregelRepo, ArtikelRepository artikelRepo) {
 		this.bestellingRepo = bestellingRepo;
 		this.klantRepo = klantRepo;
+		this.bestelregelRepo=bestelregelRepo;
+		this.artikelRepo = artikelRepo;
 	}
 
 	@GetMapping("/bestelling")
@@ -67,7 +75,17 @@ public class BestellingController {
 	public String bestellingVerwijder(@PathVariable ("bestellingId") String bestellingId) {
 		long bestellingIdLong=Long.valueOf(bestellingId);
 		bestellingRepo.deleteById(bestellingIdLong);
+		
+		List<Bestelregel> bestelregelList = bestelregelRepo.findBestelregelByBestelling(bestellingIdLong);
+		for (Bestelregel bestelregel : bestelregelList) {
+			wijzigArtikelVoorraad(bestelregel.getArtikel(), bestelregel.getAantal());
+		}
 		return "redirect:/bestelling";
+	}
+	
+	private void wijzigArtikelVoorraad(Artikel artikel, int aantal) {
+		artikel.setVoorraad(artikel.getVoorraad() + aantal);
+		artikelRepo.save(artikel);
 	}
 
 }
