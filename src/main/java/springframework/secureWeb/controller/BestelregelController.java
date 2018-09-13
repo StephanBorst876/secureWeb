@@ -95,9 +95,8 @@ public class BestelregelController {
 		return "redirect:/main";// dit moet nog aangepast worden
 	}
 
-	private void wijzigBestellingPrijs(Bestelling bestelling, BigDecimal prijs) {
-		BigDecimal initielePrijs = bestelling.getPrijs();
-		bestelling.setPrijs(initielePrijs.add(prijs));
+	private void wijzigBestellingPrijs(Bestelling bestelling, BigDecimal prijsNieuweBestelregel) {
+		bestelling.setPrijs(bestelling.getPrijs().add(prijsNieuweBestelregel));
 		bestellingRepo.save(bestelling);
 	}
 

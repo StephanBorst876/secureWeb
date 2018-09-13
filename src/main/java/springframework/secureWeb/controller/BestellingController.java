@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import springframework.secureWeb.data.BestellingRepository;
@@ -60,6 +61,13 @@ public class BestellingController {
 		Bestelling savedBestelling = bestellingRepo.save(bestelling);
 		long bestellingIdLong = savedBestelling.getId();
 		return "redirect:/bestelregel/nieuw/" + bestellingIdLong;
+	}
+	
+	@PostMapping("/bestelling/verwijder/{bestellingId}")
+	public String bestellingVerwijder(@PathVariable ("bestellingId") String bestellingId) {
+		long bestellingIdLong=Long.valueOf(bestellingId);
+		bestellingRepo.deleteById(bestellingIdLong);
+		return "redirect:/bestelling";
 	}
 
 }

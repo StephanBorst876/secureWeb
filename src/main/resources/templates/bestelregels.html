@@ -34,8 +34,23 @@
 			<td><span th:text="${bestelregel.prijs}">Prijs</span></td>
 		</tr>
 		</div>
+		
+		<!--<tr>
+        	<td colspan=3>
+            	<hr>
+            </td>
+    	</tr>-->
+    	<form name="bestellingVerwijder" th:action="@{/bestelling/verwijder/{bestellingId} (bestellingId=${bestellingId})}"	method="post" th:hidden="true">
+				<input type="submit" value="Verwijder bestelling" />
+		</form>
+    	
 	</tbody>
 </table>
+
+    	
+    		
+		
+    	
 </fieldset>
 </body>
 </html>
