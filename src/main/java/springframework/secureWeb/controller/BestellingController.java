@@ -1,5 +1,6 @@
 package springframework.secureWeb.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class BestellingController {
 		System.out.println("check bestelling nieuw inhoud");
 		Bestelling bestelling = new Bestelling();
 		bestelling.setKlant(klantRepo.findById(206L).get());
+		bestelling.setPrijs(new BigDecimal("0"));
 		Bestelling savedBestelling=bestellingRepo.save(bestelling);
 		long bestellingIdLong=savedBestelling.getId();
 		return "redirect:/bestelregel/nieuw/"+bestellingIdLong;
