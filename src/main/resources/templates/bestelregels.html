@@ -41,17 +41,41 @@
             	<hr>
             </td>
     	</tr>-->
-    	<form name="bestellingVerwijder" th:action="@{/bestelling/verwijder/{bestellingId} (bestellingId=${bestellingId})}"	method="post" th:hidden="true">
-				<input type="submit" value="Verwijder bestelling" />
-		</form>
+		<!--<tr><td colspan=3>
+	                            <ul>
+	                                <li><a href="javascript: document.bestelling/verwijder" >Verwijder hele bestelling v2.0</a></li>
+	                            </ul>
+	                            <form name="bestellingVerwijder" th:action="@{/bestelling/verwijder/{bestellingId} (id=${bestellingId})}" method="post" th:hidden="true">
+									<input type="submit" value="Gehele bestelling verwijderen" />
+								</form>
+		</td></tr>-->
+		<tr>
+			<td colspan=3 class="center">
+				<form name="bestellingVerwijder" th:action="@{/bestelling/verwijder/{bestellingId} (bestellingId=${bestellingId})}"	method="post">
+					<input style="background-color:#4CAF50; color:white" type="submit" value="Verwijder hele bestelling (excl opmaak voor hover & bevestiging)" />
+				</form>
+			</td>
+		</tr>
+	
+				
     	
 	</tbody>
 </table>
+<p>
 
-    	
+<p>    	
     		
 		
     	
 </fieldset>
+<script type="text/javascript">
+		function bevestigKeuze() {
+			if (confirm('Wilt u de <b>gehele bestelling</b> echt verwijderen?')) {
+				document.bestellingVerwijder.submit();
+			} else {
+				return false;
+			}
+		}
+</script>
 </body>
 </html>

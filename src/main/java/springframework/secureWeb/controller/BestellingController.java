@@ -30,10 +30,11 @@ public class BestellingController {
 	private final ArtikelRepository artikelRepo;
 
 	@Autowired
-	public BestellingController(BestellingRepository bestellingRepo, KlantRepository klantRepo, BestelregelRepository bestelregelRepo, ArtikelRepository artikelRepo) {
+	public BestellingController(BestellingRepository bestellingRepo, KlantRepository klantRepo,
+			BestelregelRepository bestelregelRepo, ArtikelRepository artikelRepo) {
 		this.bestellingRepo = bestellingRepo;
 		this.klantRepo = klantRepo;
-		this.bestelregelRepo=bestelregelRepo;
+		this.bestelregelRepo = bestelregelRepo;
 		this.artikelRepo = artikelRepo;
 	}
 
@@ -43,6 +44,7 @@ public class BestellingController {
 		bestellingRepo.findAll().forEach(i -> bestellingList.add(i));
 
 		model.addAttribute("bestellingen", bestellingList);
+		model.addAttribute("spatie", " ");
 
 		return "bestellingen";
 	}
@@ -54,6 +56,7 @@ public class BestellingController {
 			List<Bestelling> bestellingList = bestellingRepo.findBestellingByKlant(klantIdLong);
 
 			model.addAttribute("bestellingen", bestellingList);
+			model.addAttribute("spatie", " ");
 
 			return "bestellingen";
 		} catch (NumberFormatException e) {
@@ -70,11 +73,11 @@ public class BestellingController {
 		long bestellingIdLong = savedBestelling.getId();
 		return "redirect:/bestelregel/nieuw/" + bestellingIdLong;
 	}
-	
+
 	@PostMapping("/bestelling/verwijder/{bestellingId}")
-	public String bestellingVerwijder(@PathVariable ("bestellingId") String bestellingId) {
-		long bestellingIdLong=Long.valueOf(bestellingId);
-		
+	public String bestellingVerwijder(@PathVariable("bestellingId") String bestellingId) {
+		long bestellingIdLong = Long.valueOf(bestellingId);
+
 		List<Bestelregel> bestelregelList = bestelregelRepo.findBestelregelByBestelling(bestellingIdLong);
 		for (Bestelregel bestelregel : bestelregelList) {
 			wijzigArtikelVoorraad(bestelregel.getArtikel(), bestelregel.getAantal());
@@ -82,7 +85,7 @@ public class BestellingController {
 		bestellingRepo.deleteById(bestellingIdLong);
 		return "redirect:/bestelling";
 	}
-	
+
 	private void wijzigArtikelVoorraad(Artikel artikel, int aantal) {
 		artikel.setVoorraad(artikel.getVoorraad() + aantal);
 		artikelRepo.save(artikel);

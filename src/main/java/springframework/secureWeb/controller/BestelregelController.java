@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import springframework.secureWeb.data.ArtikelRepository;
@@ -22,7 +21,7 @@ import springframework.secureWeb.domein.Artikel;
 import springframework.secureWeb.domein.Bestelling;
 import springframework.secureWeb.domein.Bestelregel;
 
-@SessionAttributes({ "bestellingIdLong", "artikelId" })
+@SessionAttributes({ "bestellingIdLong"})
 @Controller
 public class BestelregelController {
 
@@ -68,20 +67,23 @@ public class BestelregelController {
 		model.addAttribute("bestellingIdLong", bestellingIdLong);
 		model.addAttribute("bestelregel", new Bestelregel());
 		model.addAttribute("artikel", new Artikel());
-		//model.addAttribute("artikelId", 60L);
+		model.addAttribute("prijstekst", " prijs: ");
+		model.addAttribute("voorraadtekst", " euro voorraad: ");
 
 		return "bestelregelNieuw";
 	}
 
 	@PostMapping("/bestelregelForm")
-	public String processBestelregel(Model model, Bestelregel bestelregel, @ModelAttribute("bestellingIdLong") Long bestellingIdLong) {
+	public String processBestelregel(Bestelregel bestelregel,
+			@ModelAttribute("bestellingIdLong") long bestellingIdLong) {
 		Bestelling bestelling = bestellingRepo.findById(bestellingIdLong).get();
 		bestelregel.setBestelling(bestelling);
-		bestelregel.setPrijs(bestelregel.getArtikel().getPrijs().multiply(new BigDecimal("" + bestelregel.getAantal())));
+		bestelregel
+				.setPrijs(bestelregel.getArtikel().getPrijs().multiply(new BigDecimal("" + bestelregel.getAantal())));
 		bestelregelRepo.save(bestelregel);
 		wijzigBestellingPrijs(bestelling, bestelregel.getPrijs());
 		wijzigArtikelVoorraad(bestelregel.getArtikel(), bestelregel.getAantal());
-		return "redirect:/main";// dit moet nog aangepast worden
+		return "redirect:/bestelregels/" + bestellingIdLong;
 	}
 
 	private void wijzigBestellingPrijs(Bestelling bestelling, BigDecimal prijsNieuweBestelregel) {
