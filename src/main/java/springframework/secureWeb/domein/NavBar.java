@@ -11,12 +11,14 @@ public class NavBar {
     private boolean accounts;
     private boolean klanten;
     private boolean artikelen;
+    private boolean klantgegevens;
 
     public NavBar(String accountRol) {
 
         accounts = false;
         klanten = false;
         artikelen = false;
+        klantgegevens=false;
         
         Rol rol = Account.Rol.toRol(accountRol);
         if (rol.equals(Account.Rol.beheerder)) {
@@ -26,6 +28,9 @@ public class NavBar {
         if (rol.equals(Account.Rol.beheerder) || rol.equals(Account.Rol.medewerker)) {
             klanten = true;
             artikelen = true;
+        }
+        if (rol.equals(Account.Rol.klant)){
+        	klantgegevens=true;
         }
         
     }
@@ -70,6 +75,14 @@ public class NavBar {
      */
     public void setArtikelen(boolean artikelen) {
         this.artikelen = artikelen;
+    }
+    
+    public boolean isKlantgegevens() {
+    	return klantgegevens;
+    }
+    
+    public void setKlantgegevens(boolean klantgegevens) {
+    	this.klantgegevens=klantgegevens;
     }
 
 }

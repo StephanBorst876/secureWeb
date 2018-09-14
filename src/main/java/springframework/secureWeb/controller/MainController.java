@@ -33,7 +33,7 @@ public class MainController {
       //  if (rol == null) {
             String userNaam = authentication.getName();
               Account account = accountRepo.findByuserNaam(userNaam);
-      
+              model.addAttribute("account", account);
     
             if (account != null) {
                 rol = account.getRol().toString();
