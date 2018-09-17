@@ -67,7 +67,7 @@ public class BestellingController {
 	@RequestMapping("/bestelling/nieuw")
 	public String nieuweBestelling() {
 		Bestelling bestelling = new Bestelling();
-		bestelling.setKlant(klantRepo.findById(206L).get());
+		// bestelling.setKlant(klantRepo.findById(206L).get());
 		bestelling.setPrijs(new BigDecimal("0"));
 		Bestelling savedBestelling = bestellingRepo.save(bestelling);
 		long bestellingIdLong = savedBestelling.getId();

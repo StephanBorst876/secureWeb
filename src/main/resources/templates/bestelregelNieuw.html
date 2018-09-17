@@ -25,17 +25,28 @@
             </div> 
             
             
+            
+            
            <form name="bestelregelForm" th:action="@{/bestelregelForm}" method="post" th:object="${bestelregel}">
                 <input type="hidden" th:field="*{id}"/>
+                
                 	<table>
-                		<tr><td class=text>Artikel : </td>
+                		<div th:object="${bestelling}" >
+                			<tr><td class=text>Klant : </td>
+								<td><select th:field="*{klant}">
+                			<option th:each="klant : ${klanten}" th:value="${klant.id}" th:text="${klant.voornaam}">
+                			</option></select></td></tr>
+                		</div>      				
+                		
+          		      	<tr><td class=text>Artikel : </td>
                 		<td><select th:field="*{artikel}">
                 				<option th:each="artikel : ${artikelen}" th:value="${artikel.id}" th:text="${artikel.naam}+${prijstekst}+${artikel.prijs}+${voorraadtekst}+${artikel.voorraad}">
                 				</option></select></td></tr>
               
                     	<tr>
                         	<td class=text>Aantal : </td>
-                        	<td><input type="number" min="1" th:field="*{aantal}"/></td>
+                        	<td><input type="number" th:field="*{aantal}"/></td>
+                        	<td><span class="validationError" th:if="${#fields.hasErrors('aantal')}" th:errors="*{aantal}"></span></td>
                     	</tr>
 	                    <tr>
 	                        <td colspan=2>
@@ -55,5 +66,6 @@
             </form>
 
         </fieldset>
-    </body>
+        
+</body>
 </html>

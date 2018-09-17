@@ -3,12 +3,14 @@ package springframework.secureWeb.domein;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
@@ -25,10 +27,12 @@ public class Bestelregel implements Serializable {
 	@ManyToOne
     private Artikel artikel;
 	
-	@ColumnDefault("0")
+	@Column(columnDefinition = "int default 1")
+	@Min(1)
 	private int aantal;
 	
 	@ColumnDefault("0")
+	@Min(0)
 	private BigDecimal prijs;
 	
 	@ManyToOne
