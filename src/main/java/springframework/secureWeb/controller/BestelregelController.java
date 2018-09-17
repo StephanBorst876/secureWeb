@@ -82,19 +82,25 @@ public class BestelregelController {
 		model.addAttribute("prijstekst", " - prijs: ");
 		model.addAttribute("voorraadtekst", " euro - voorraad: ");
 		model.addAttribute("bestelling", bestelling);
-
-		if (bestelling.getKlant() == null) {
+		
+		/*if (bestelling.getKlant() == null) {
 			model.addAttribute("toonKlantForm", true);
+			System.out.println("block");
 		} else {
-			model.addAttribute("toonKlantForm", false);
+			//model.addAttribute("toonKlantForm", "style=\"display:none;\"");
+			System.out.println("none");
+		}*/
+		if (bestelling.getKlant() == null) {
+			model.addAttribute("klantOptieToevoegen", 1);
 		}
+	
 
 		return "bestelregelNieuw";
 	}
 
 	@PostMapping("/bestelregelForm")
 	public String processBestelregel(@Valid Bestelregel bestelregel, Errors bestelregelErrors,
-			@ModelAttribute("bestellingIdLong") long bestellingIdLong, long klant) {
+			@ModelAttribute("bestellingIdLong") long bestellingIdLong, Long klant) {
 		if (bestelregelErrors.hasErrors()) {
 			return "bestelregelNieuw";
 		} else {

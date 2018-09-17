@@ -21,7 +21,8 @@
 
         <fieldset style="width:75%;">
             <div>
-                <h1>Bestelregel toevoegen</h1>
+            	<h1>Bestelregel toevoegen</h1>
+            	<h2></h2>
             </div> 
             
             
@@ -31,12 +32,12 @@
                 <input type="hidden" th:field="*{id}"/>
                 
                 	<table>
-                		<div th:object="${bestelling}" >
-                			<tr><td class=text>Klant : </td>
+                		<div th:object="${bestelling}">
+                			<tr th:if="${klantOptieToevoegen != null}"><td class=text>Klant (verborgen?!): </td>
 								<td><select th:field="*{klant}">
                 			<option th:each="klant : ${klanten}" th:value="${klant.id}" th:text="${klant.voornaam}">
                 			</option></select></td></tr>
-                		</div>      				
+                		</div>    				
                 		
           		      	<tr><td class=text>Artikel : </td>
                 		<td><select th:field="*{artikel}">
@@ -65,7 +66,6 @@
 
             </form>
 
-        </fieldset>
-        
+        </fieldset>        
 </body>
 </html>
