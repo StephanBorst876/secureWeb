@@ -41,7 +41,7 @@
                 		
           		      	<tr><td class=text>Artikel : </td>
                 		<td><select th:field="*{artikel}">
-                				<option th:each="artikel : ${artikelen}" th:value="${artikel.id}" th:text="${artikel.naam}+${prijstekst}+${artikel.prijs}+${voorraadtekst}+${artikel.voorraad}">
+                				<option th:each="artikel : ${artikelen}" th:value="${artikel.id}" th:text="${artikel.naam}+' - prijs: '+${artikel.prijs}+' euro - voorraad: '+${artikel.voorraad}">
                 				</option></select></td></tr>
               
                     	<tr>

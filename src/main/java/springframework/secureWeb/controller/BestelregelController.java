@@ -26,7 +26,7 @@ import springframework.secureWeb.domein.Bestelling;
 import springframework.secureWeb.domein.Bestelregel;
 import springframework.secureWeb.domein.Klant;
 
-@SessionAttributes({ "bestellingIdLong", "artikelen", "voorraadtekst", "prijstekst", "bestelling" })
+@SessionAttributes({ "bestellingIdLong", "artikelen", "bestelling", "klantOptieToevoegen", "klanten" })
 @Controller
 public class BestelregelController {
 
@@ -79,19 +79,10 @@ public class BestelregelController {
 		model.addAttribute("bestellingIdLong", bestellingIdLong);
 		model.addAttribute("bestelregel", new Bestelregel());
 		model.addAttribute("artikel", new Artikel());
-		model.addAttribute("prijstekst", " - prijs: ");
-		model.addAttribute("voorraadtekst", " euro - voorraad: ");
 		model.addAttribute("bestelling", bestelling);
 		
-		/*if (bestelling.getKlant() == null) {
-			model.addAttribute("toonKlantForm", true);
-			System.out.println("block");
-		} else {
-			//model.addAttribute("toonKlantForm", "style=\"display:none;\"");
-			System.out.println("none");
-		}*/
 		if (bestelling.getKlant() == null) {
-			model.addAttribute("klantOptieToevoegen", 1);
+			model.addAttribute("klantOptieToevoegen", true);
 		}
 	
 
