@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+
+    <title>Error</title>
+ <link rel="stylesheet" th:href="@{/styles.css}" />
+        <style>
+            .center {
+                margin: auto;
+                width: 20%;
+                font-family: Arial;
+                font-size: 20px;
+                color:mediumseagreen;
+            }
+        </style>
+
+    </head>
+    <body>
+        <img th:src="@{/images/landschap.png}"/>
+    
+        <ul>
+             
+            <li th:style="${navbar.accounts} ? 'display:block' : 'display:none'" ><a th:href="@{/accounts}">Accounts</a></li>
+            <li th:style="${navbar.klanten} ? 'display:block' : 'display:none'" ><a th:href="@{/klanten}">Klanten</a></li>
+            <li th:style="${navbar.artikelen} ? 'display:block' : 'display:none'" ><a th:href="@{/artikelen}">Artikelen</a></li>
+            <li th:style="${navbar.mijnKlantGegevens} ? 'display:block' : 'display:none'" ><a th:href="@{/mijnKlantGegevens}">mijn klantgegevens</a></li>
+            <li><a th:href="@{/bestelling}">Bestellingen</a></li>
+            
+            <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
+            <li style="float:right"><b>Gebruiker : <span sec:authentication="name">USERNAME</span></b></li>
+        </ul>
+        
+        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+            <input type="submit" value="Logout"/>
+        </form> 
+
+        <fieldset style="width:75%;height:25%">
+            <div>
+                <h1>Error</h1>
+                	 <p th:text="${errorMsg}" />
+            </div>  
+        </fieldset>
+
+        <div class="center">
+            <marquee>Application powered by team POLS: Pascal, Olaf, Liz en Stephan</marquee>
+        </div>
+
+		
+</body>
+</html>
