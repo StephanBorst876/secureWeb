@@ -1,10 +1,13 @@
 package springframework.secureWeb.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +33,7 @@ import springframework.secureWeb.domein.Klant;
  * @author FeniksBV
  */
 @Controller
-@SessionAttributes({"klantID", "adresID"})
+@SessionAttributes({"klantID", "adresID", "accountID"})
 public class KlantController {
 
     @SuppressWarnings("unused")
@@ -52,11 +55,47 @@ public class KlantController {
     public String Klanten(Model model) {
         List<Klant> klantList = new ArrayList<>();
         klantRepo.findAll().forEach(i -> klantList.add(i));
-
-        model.addAttribute("klanten", klantList);
+          model.addAttribute("klanten", klantList);
 
         return "klanten";
     }
+    
+    @GetMapping("/mijnKlantGegevens")
+    public String KlantGegevens(Model model, Principal principal) {
+    	
+    	Account account = accountRepo.findByuserNaam(principal.getName());
+    	model.addAttribute("account", account);
+    
+    	Klant klant = klantRepo.findKlantByAccount(account);
+    	model.addAttribute("klant", klant);
+   
+    	 boolean postAdresAdded = false;
+    	 List<Adres> adresList = adresRepo.findAdresByKlant(klant.getId());
+    	 for (int i = 0; i < adresList.size(); i++) {
+             if (adresList.get(i).getAdresType().equals(Adres.AdresType.POSTADRES)) {
+                 postAdresAdded = true;
+                 model.addAttribute("postadres", adresList.get(i));
+
+                 // Zet ook de sessionAttribute
+                 model.addAttribute("adresID", adresList.get(i).getId());
+
+             } else if (adresList.get(i).getAdresType().equals(Adres.AdresType.BEZORGADRES)) {
+                 model.addAttribute("bezorgadres", adresList.get(i));
+             } else if (adresList.get(i).getAdresType().equals(Adres.AdresType.FACTUURADRES)) {
+                 model.addAttribute("factuuradres", adresList.get(i));
+             }
+         }
+    	  if (!postAdresAdded) {
+              // reset ook de sessionattribute
+              model.addAttribute("adresID", 0L);
+              model.addAttribute("postadres", new Adres(Adres.AdresType.POSTADRES));
+          }
+
+    	
+    	model.addAttribute("accountID", account.getId());
+        return "mijnKlantGegevens";
+    }
+   
 
     @RequestMapping(value = "/klant/muteer/{klantId}")
     public String KlantMuteer(Model model, @PathVariable("klantId") String klantId) {
@@ -168,9 +207,7 @@ public class KlantController {
             @SessionAttribute("adresID") Long adresID) {
 
         if (klanterrors.hasErrors()) {
-        //    model.addAttribute("klant", klant);
-        //    model.addAttribute("postadres", postAdres);
-        //    model.addAttribute("account", account);
+      
             if (klant.getId() == null) {
                 return "klantNieuw";
             } else {
@@ -179,9 +216,7 @@ public class KlantController {
         }
 
         if (adreserrors.hasErrors()) {
-     //       model.addAttribute("klant", klant);
-     //      model.addAttribute("postadres", postAdres);
-        //    model.addAttribute("account", account);
+  
             if (klant.getId() == null) {
                 return "klantNieuw";
             } else {
@@ -190,9 +225,7 @@ public class KlantController {
         }
         
         if (accounterrors.hasErrors()) {
-        //    model.addAttribute("klant", klant);
-//            model.addAttribute("postadres", postAdres);
-  //          model.addAttribute("account", account);
+ 
             if (klant.getId() == null) {
                 return "klantNieuw";
             } else {
@@ -200,11 +233,15 @@ public class KlantController {
             }
         }
         try {
+        
             account.setPassword(BCrypt.hashpw(account.getPassword(),BCrypt.gensalt(12)));
+           
             Account accountDB = accountRepo.save(account);
             klant.setAccount(accountDB);
+          
             }
             catch(Exception ex) {
+            	
             	String message = "usernaam bestaat al kies een andere!";
             	model.addAttribute("message", message);
             	  return "klantNieuw";
@@ -223,4 +260,62 @@ public class KlantController {
         return "redirect:/klanten";
 
     }
+    
+    @PostMapping("/klantGegevensForm")
+    public String processKlantGegevens(Model model,@Valid Klant klant, Errors klanterrors, @ModelAttribute("postadres")@Valid Adres postAdres,Errors adreserrors,
+    		@ModelAttribute ("account")@Valid Account account, Errors accounterrors,  
+            @SessionAttribute("adresID") Long adresID, @SessionAttribute("accountID") Long accountID) {
+
+        if (klanterrors.hasErrors()) {
+       
+            if (klant.getId() == null) {
+                return "mijnKlantGegevens";
+            } else {
+                return "mijnKlantGegevens";
+            }
+        }
+
+        if (adreserrors.hasErrors()) {
+ 
+            if (klant.getId() == null) {
+                return "mijnKlantGegevens";
+            } else {
+                return "mijnKlantGegevens";
+            }
+        }
+        
+        if (accounterrors.hasErrors()) {
+   
+            if (klant.getId() == null) {
+                return "mijnKlantGegevens";
+            } else {
+                return "mijnKlantGegevens";
+            }
+        }
+        try {
+        	account.setId(accountID);
+            account.setPassword(BCrypt.hashpw(account.getPassword(),BCrypt.gensalt(12)));
+            Account accountDB = accountRepo.save(account);
+            klant.setAccount(accountDB);
+            }
+            catch(Exception ex) {
+            	String message = "usernaam bestaat al kies een andere!";
+            	model.addAttribute("message", message);
+            	  return "mijnKlantGegevens";
+            }
+          
+            
+        
+        Klant klantDB = klantRepo.save(klant);
+
+        postAdres.setId(adresID); // Bewaard in sessionAttr 
+        postAdres.setKlant(klantDB);
+        postAdres.setAdresType(AdresType.POSTADRES);
+        adresRepo.save(postAdres);
+
+        // Nu terug naar de Get op /klanten om de gehele lijst te tonen
+        return "redirect:/main";
+
+    }
+    
 }

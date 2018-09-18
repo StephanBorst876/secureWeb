@@ -27,7 +27,7 @@ public class MainController {
         this.accountRepo = accountRepo;
     }
 
-    @GetMapping("/main")
+    @GetMapping({"/", "/main"})
     public String Main(Model model, Authentication authentication) {
 
       //  if (rol == null) {

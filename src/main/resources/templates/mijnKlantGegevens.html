@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Klant Gegevens</title>
+        <link rel="stylesheet" th:href="@{/styles.css}" />
+    </head>
+    <body>
+        <img th:src="@{/images/landschap.png}"/>
+
+        <ul>
+            <li><a th:href="@{/main}">Home</a></li>
+            <li><a th:href="@{/mijnAdres}">mijnadressen</a></li>
+       
+            
+            <li style="float:right"><a href="javascript: document.logoutForm.submit()" >Uitloggen</a></li>
+        </ul>
+
+        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+            <input type="submit" value="Logout"/>
+        </form> 
+
+        <fieldset style="width:75%;">
+            <div>
+                <h1>Klant Gegevens</h1>
+            </div> 
+            <form name="klantForm" th:action="@{/klantGegevensForm}" method="post" th:object="${klant}">
+                <input type="hidden" th:field="*{id}"/>
+         
+		
+     <span class="validationError"
+                      th:if="${#fields.hasErrors('voornaam')}" 
+                      th:errors="*{voornaam}"></span>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('achternaam')}" 
+                      th:errors="*{achternaam}"></span>
+
+                <table>
+                    <tr>
+                        <td class=text>Voornaam : </td>
+                        <td><input type="text" th:field="*{voornaam}"/></td>
+                    </tr>
+                    <tr>
+                        <td class=text>Tussenvoegsel : </td>
+                        <td><input type="text" th:field="*{tussenvoegsel}"/></td>
+                    </tr>
+                    <tr>
+                        <td class=text>Achternaam : </td>
+                        <td><input type="text" th:field="*{achternaam}"/></td>
+                    </tr>
+		
+				
+				     
+                
+                    <div th:object="${postadres}" >
+               
+             
+                    <span class="validationError"
+                              th:if="${#fields.hasErrors('straatnaam')}" 
+                              th:errors="*{straatnaam}"></span>
+                              <span class="validationError"
+                              th:if="${#fields.hasErrors('woonplaats')}" 
+                              th:errors="*{woonplaats}"></span>
+                    
+              
+                       
+                 <tr><td class=text>Postadres</td>
+                        <tr>
+                            <td class=text>Straatnaam : </td>
+                            <td><input type="text" th:field="*{straatnaam}"/></td>
+                        </tr>
+                        <tr>
+                            <td class=text>Huisnummer : </td>
+                            <td><input type="text" th:field="*{huisnummer}"/></td>
+                        </tr>
+                        <tr>
+                            <td class=text>Toevoeging : </td>
+                            <td><input type="text" th:field="*{toevoeging}"/></td>
+                        </tr>
+                        <tr>
+                            <td class=text>Postcode : </td>
+                            <td><input type="text" th:field="*{postcode}"/></td>
+                        </tr>
+                        <tr>
+                            <td class=text>Woonplaats : </td>
+                            <td><input type="text" th:field="*{woonplaats}"/></td>
+                        </tr>
+                           <tr>
+                            <td class=text>Bezorgadres : </td>
+                            <td class=left><span th:text="${bezorgadres!=null}?'aanwezig':'afwezig'">Stef</span></td>
+                        </tr>
+                        <tr>
+                            <td class=text>Factuuradres : </td>
+                            <td class=left><span th:text="${factuuradres!=null}?'aanwezig':'afwezig'">Stef</span></td>
+                        </tr>
+                        </table>
+                    </div>
+
+                    <tr>
+                        <td colspan=2>
+                            <hr>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                       
+                    </tr>
+                </table>
+
+      
+     
+        <div>
+			<h1>Account Gegevens</h1>
+					 <p th:text="${message}" />
+		</div>
+		  <div th:object="${account}" >
+
+			 <span
+				class="validationError" th:if="${#fields.hasErrors('userNaam')}"
+				th:errors="*{userNaam}">usernaam moet ingevuld!</span>
+				 <span
+				class="validationError" th:if="${#fields.hasErrors('password')}"
+				th:errors="*{password}">password moet ingevuld!</span>
+			<table>
+				<tr>
+					<td class=text>usernaam :</td>
+					<td><input type="text" th:field="*{userNaam}" /></td>
+				</tr>
+				<tr>
+					<td class=text>Password :</td>
+					<td><input type="password" th:field="*{password}" /></td>
+				</tr>
+				<tr>
+					<td class=text>Rol :</td>
+					<td class=left><select name="rol" id="rol">
+							<option value="klant">klant</option>
+						</select></td>
+				</tr>
+				<tr>
+					<td colspan=2>
+						<hr>
+					</td>
+				
+				</tr>
+				<tr>
+					 <td>
+                            <ul >
+                                <li ><a  href="javascript: document.klantForm.submit()" >Toevoegen</a></li>
+                            </ul>
+                        </td>
+			</tr>
+</table>
+</div>
+      </form> 
+
+        </fieldset>
+    </body>
+</html>
+
