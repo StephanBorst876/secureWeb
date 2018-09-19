@@ -3,6 +3,7 @@ package springframework.secureWeb.domein;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Bestelregel implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	
 	@ManyToOne
     private Artikel artikel;
@@ -39,11 +40,11 @@ public class Bestelregel implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Bestelling bestelling;
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

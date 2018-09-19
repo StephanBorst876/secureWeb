@@ -30,7 +30,8 @@
 		</tr>
 		<div th:each="bestelregel : ${bestelregels}">
 		<tr>		
-			<td class="left"><span th:text="${bestelregel.artikel.naam}">artikel</span></td>
+			<td class="left"><a class=link
+						th:href="@{/bestelregel/muteer/{id} (id=${bestelregel.id})}"><span th:text="${bestelregel.artikel.naam}">artikel</span></td>
 			<td><span th:text="${bestelregel.aantal}">Aantal</span></td>
 			<td><span th:text="${bestelregel.prijs}">Prijs</span></td>
 		</tr>

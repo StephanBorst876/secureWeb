@@ -119,4 +119,8 @@ public class Klant implements Serializable{
     public void setAccount(Account account) {
         this.account = account;
     }
+    
+    public boolean equals(Klant klant) {
+    	return klant.getAccount()==account && klant.getId()==id && klant.getVoornaam().equals(voornaam) && klant.getTussenvoegsel().equals(tussenvoegsel) && klant.getAchternaam().equals(achternaam);
+    }
 }

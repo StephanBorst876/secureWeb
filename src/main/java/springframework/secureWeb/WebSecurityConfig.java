@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/artikelen","/artikel/**", "/klanten","/klant/**","/bestellingen","/bestelling/**","/bezorgadres/**", "/factuuradres/**") 
+                .antMatchers("/artikelen","/artikel/**", "/klanten","/klant/**","/bezorgadres/**", "/factuuradres/**") 
                 .hasAnyAuthority("ROLE_MEDEWERKER","ROLE_BEHEERDER" )
                 .antMatchers("/accounts", "/account/**") 
                 .hasAuthority("ROLE_BEHEERDER")

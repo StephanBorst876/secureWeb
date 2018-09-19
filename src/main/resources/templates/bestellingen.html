@@ -29,7 +29,7 @@
 		</tr>
 		<div th:each="bestelling : ${bestellingen}">
 		<tr>		
-			<td class=left><a class=link th:href="@{/bestelregels/{bestellingId} (bestellingId=${bestelling.id})}"> <span th:text="${bestelling.id}"></span></a></td>
+            <td class=left><a class=link th:href="@{/bestelregels/{bestellingId} (bestellingId=${bestelling.id})}"> <span th:text="${bestelling.id}"></span></a></td>
 			<td><span th:text="${bestelling.prijs}"></span></td>
 			<td class="left"><span th:text="${bestelling.klant.voornaam}+' '+${bestelling.klant.tussenvoegsel}+' '+${bestelling.klant.achternaam}"></span></td>
 		</tr>
