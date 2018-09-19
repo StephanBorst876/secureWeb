@@ -52,9 +52,13 @@
 		</td></tr>-->
 		<tr>
 			<td colspan=3 class="center">
-				<form name="bestellingVerwijder" th:action="@{/bestelling/verwijder/{bestellingId} (bestellingId=${bestellingId})}"	method="post">
-					<input style="background-color:#4CAF50; color:white" type="submit" value="Verwijder hele bestelling (excl opmaak voor hover & bevestiging)" />
-				</form>
+				<!--<a method="post" th:href="@{/bestelling/verwijder/{bestellingId} (bestellingId=${bestellingId})}">Verwijder hele bestelling</a>-->
+				<!--<form name="bestellingVerwijder" th:action="@{/bestelling/verwijder/{bestellingId} (bestellingId=${bestellingId})}"	method="post">
+					<input style="background-color:#4CAF50; color:white" type="submit" value="Verwijder hele bestelling" />
+				</form>-->
+				<ul><li><a href="javascript: document.bestellingVerwijder.submit()">Verwijder hele bestelling</a></li></ul>
+				<form method="post" name="bestellingVerwijder" th:action="@{/bestelling/verwijder/{bestellingId} (bestellingId=${bestellingId})}" th:hidden="true">
+				<input type="submit"></form>
 			</td>
 		</tr>
 	
@@ -69,7 +73,7 @@
 		
     	
 </fieldset>
-<script type="text/javascript">
+<!--<script type="text/javascript">
 		function bevestigKeuze() {
 			if (confirm('Wilt u de <b>gehele bestelling</b> echt verwijderen?')) {
 				document.bestellingVerwijder.submit();
@@ -77,6 +81,6 @@
 				return false;
 			}
 		}
-</script>
+</script>-->
 </body>
 </html>

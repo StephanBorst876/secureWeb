@@ -28,6 +28,9 @@
 		<form name="bestelregelMuteerForm" th:action="@{/bestelregelMuteerForm}"
 			method="post" th:object="${teMuterenBestelregel}">
 			<input type="hidden" th:field="*{id}" />
+			<span class="validationError"
+                      th:if="${#fields.hasErrors('aantal')}" 
+                      th:errors="*{aantal}">Aantal moet positief zijn!</span>
 			<table>
 				<tr><td class=text>Artikel : </td>
                 		<td><select th:field="*{artikel}">
@@ -37,7 +40,7 @@
                 <tr>
                         	<td class=text>Aantal : </td>
                         	<td><input type="number" th:field="*{aantal}"/></td>
-                        	<td><span class="validationError" th:if="${#fields.hasErrors('aantal')}" th:errors="*{aantal}"></span></td>
+                        	<td><span class="validationError" th:if="${#fields.hasErrors('aantal')}" th:errors="*{aantal}">aantal moet positief zijn</span></td>
                 </tr>
 				<tr>
 					<td colspan=2>

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -132,6 +131,17 @@ public class BestelregelController {
 	public String processBestelregel(@Valid Bestelregel bestelregel, Errors bestelregelErrors,
 			@ModelAttribute("bestellingIdLong") Long bestellingIdLong, Long klant, Principal principal, Model model) {
 		Bestelling bestelling;
+		//controleer of er geen fouten in formulier staan
+		if (bestelregelErrors.hasFieldErrors()) { //kan in principe met voorraad worden samengevoegd in OR-constructie?
+			//als er fouten zijn en de bestelling wel al bestaat
+			if(bestellingIdLong==0L) {
+				return "redirect:bestelregel/nieuw";
+			}
+			//als er fouten zijn en de bestelling wel al bestaat
+			else {
+				return "redirect:bestelregel/nieuw/"+bestellingIdLong;
+			}
+		}
 		//controleer of artikelvoorraad voldoet
 		if (!checkOfArtikelVoorraadVoldoet(bestelregel.getArtikel(), bestelregel.getAantal())) {
 			//als artikelvoorraad niet voldoet en het ging om een nog niet bestaande bestelling
@@ -210,9 +220,14 @@ public class BestelregelController {
 	}
 
 	@PostMapping("/bestelregelMuteerForm")
-	public String processBestelregelMuteer(Model model, @Valid Bestelregel bestelregel, Errors errors,
+	public String processBestelregelMuteer(Model model, @Valid Bestelregel bestelregel, Errors bestelregelErrors,
 			@SessionAttribute("bijbehorendeBestellingId") Long bestellingId,
 			@SessionAttribute("teMuterenBestelregel") Bestelregel oudeBestelregel) {
+		if(bestelregelErrors.hasErrors()) {
+			System.out.println("er zijn errors");
+			return "bestelregelMuteer";
+		}
+		
 		Bestelling bestelling = bestellingRepo.findById(bestellingId).get();
 		bestelregel.setBestelling(bestelling);
 
