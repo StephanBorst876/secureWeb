@@ -41,12 +41,14 @@
           		      	<tr><td class=text>Artikel : </td>
                 		<td><select th:field="*{artikel}">
                 				<option th:each="artikel : ${artikelen}" th:value="${artikel.id}" th:text="${artikel.naam}+' - prijs: '+${artikel.prijs}+' euro - voorraad: '+${artikel.voorraad}">
-                				</option></select></td></tr>
+                				</option></select></td>
+                		</tr>
               
                     	<tr>
                         	<td class=text>Aantal : </td>
                         	<td><input type="number" th:field="*{aantal}"/></td>
                         	<td><span class="validationError" th:if="${#fields.hasErrors('aantal')}" th:errors="*{aantal}"></span></td>
+                        	<!--<td th:if="${voorraadVoldoetNietMessage==true}" class=text>Gekozen aantal van artikel is niet voorradig, kies opnieuw</td>-->
                     	</tr>
 	                    <tr>
 	                        <td colspan=2>

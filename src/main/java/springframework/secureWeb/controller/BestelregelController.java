@@ -124,14 +124,25 @@ public class BestelregelController {
 		model.addAttribute("artikel", new Artikel());
 		model.addAttribute("bestellingIdLong", 0L);
 		model.addAttribute("bestelling", new Bestelling());
-
+		
 		return "bestelregelNieuw";
 	}
 
 	@PostMapping("/bestelregelForm")
 	public String processBestelregel(@Valid Bestelregel bestelregel, Errors bestelregelErrors,
-			@ModelAttribute("bestellingIdLong") Long bestellingIdLong, Long klant, Principal principal) {
+			@ModelAttribute("bestellingIdLong") Long bestellingIdLong, Long klant, Principal principal, Model model) {
 		Bestelling bestelling;
+		//controleer of artikelvoorraad voldoet
+		if (!checkOfArtikelVoorraadVoldoet(bestelregel.getArtikel(), bestelregel.getAantal())) {
+			//als artikelvoorraad niet voldoet en het ging om een nog niet bestaande bestelling
+			if(bestellingIdLong==0L) {
+				return "redirect:bestelregel/nieuw";
+			}
+			//als artikelvoorraad niet voldoet en de bestelling wel al bestaat
+			else {
+				return "redirect:bestelregel/nieuw/"+bestellingIdLong;
+			}
+		}
 		if (bestellingIdLong == 0) {
 			bestelling = new Bestelling();
 			bestelling.setPrijs(new BigDecimal("0"));
@@ -186,14 +197,15 @@ public class BestelregelController {
 		Bestelling bestelling = bestelregel.getBestelling();
 
 		if (heeftToegangTotBestelling(principal, bestelling)) {
-			// artikelvoorraad verhogen met verwijderd aantal artikelen
-			wijzigArtikelVoorraad(bestelregel.getArtikel(), -bestelregel.getAantal());
-			// prijs bestelling verlagen met prijs te verwijderen bestelregel
-			wijzigBestellingPrijs(bestelling, bestelregel.getPrijs().multiply(new BigDecimal("-1")));
-			bestellingRepo.save(bestelling);
-			bestelregelRepo.deleteById(bestelregelIdLong);
-			return "redirect:/bestelling";
-		}
+				// artikelvoorraad verhogen met verwijderd aantal artikelen
+				wijzigArtikelVoorraad(bestelregel.getArtikel(), -bestelregel.getAantal());
+				// prijs bestelling verlagen met prijs te verwijderen bestelregel
+				wijzigBestellingPrijs(bestelling, bestelregel.getPrijs().multiply(new BigDecimal("-1")));
+				bestellingRepo.save(bestelling);
+				bestelregelRepo.deleteById(bestelregelIdLong);
+				return "redirect:/bestelling";
+			}
+			
 		return "redirect:/main";
 	}
 
@@ -206,6 +218,7 @@ public class BestelregelController {
 
 		bestelregel
 				.setPrijs(bestelregel.getArtikel().getPrijs().multiply(new BigDecimal("" + bestelregel.getAantal())));
+		if(checkOfArtikelVoorraadVoldoet(bestelregel.getArtikel(), bestelregel.getAantal())) {
 
 		wijzigBestellingPrijs(bestelling, oudeBestelregel.getPrijs().multiply(new BigDecimal("-1")));
 		wijzigBestellingPrijs(bestelling, bestelregel.getPrijs());
@@ -214,6 +227,13 @@ public class BestelregelController {
 
 		bestelregelRepo.save(bestelregel);
 		return "redirect:bestelregels/" + bestelregel.getBestelling().getId();
+		}
+		else {
+			//terug naar bestelregel muteren, aangezien aantal niet matcht met voorraad
+			return "redirect:bestelregel/muteer/"+bestelregel.getBestelling().getId();
+		}
+		
+	
 	}
 
 	private void wijzigBestellingPrijs(Bestelling bestelling, BigDecimal prijsNieuweBestelregel) {
@@ -235,12 +255,13 @@ public class BestelregelController {
 
 	private boolean heeftToegangTotBestelling(Principal principal, Bestelling bestelling) {
 		// als ingelogde account een klant is, dan is toegang afhankelijk of de
-		// bestelling ook op zijn/haar naam staat
+		// bestelling ook op diens naam staat
 		if (accountRepo.findByuserNaam(principal.getName()).getRol().equals(Account.Rol.klant)) {
 			Klant ingelogdeKlant = klantRepo.findKlantByAccount(accountRepo.findByuserNaam(principal.getName()));
 			Klant klantOpWieBestellingStaat = bestelling.getKlant();
 			return ingelogdeKlant.equals(klantOpWieBestellingStaat);
 		} else
+			//andere rollen dan klanten hebben altijd toegang tot de bestelling
 			return true;
 
 	}
