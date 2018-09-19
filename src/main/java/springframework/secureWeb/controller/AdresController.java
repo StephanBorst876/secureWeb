@@ -165,22 +165,21 @@ public class AdresController {
     }
     
     @PostMapping("/bezorgadresGegevensForm")
-    public String processAdresGegevens(@ModelAttribute("adres")@Valid Adres adres, Errors errors, @ModelAttribute("klantID") Long klantID,
-            Model model, Principal principal) {
+    public String processAdresGegevens( @ModelAttribute("adres")@Valid Adres adres, Errors errors,@ModelAttribute("factuuradres")@Valid Adres factuuradres, Errors factuurerrors, @ModelAttribute("klantID") Long klantID
+           ) {
 
         if (errors.hasErrors()) {
-        		model.addAttribute("adres",adres) 	;
-        		model.addAttribute("klant_id", klantID);
-            if (adres.getAdresType().equals(AdresType.BEZORGADRES)) {
-            
-                return "mijnAdres";
-            } else {
+    //    		model.addAttribute("adres",adres) 	;
+        	//	model.addAttribute("klant_id", klantID);
+   //     		model.addAttribute("factuuradres", factuuradres);
+       
                 return "mijnAdres";
             }
-        }
+        
 
         
         Klant klant = klantRepo.findById(klantID).get();
+        adres.setAdresType(AdresType.BEZORGADRES);
         adres.setKlant(klant);
         adresRepo.save(adres);
         
@@ -189,21 +188,22 @@ public class AdresController {
     
     
     @PostMapping("/factuuradresGegevensForm")
-    public String processFactuurAdresGegevens(@ModelAttribute("factuuradres")@Valid Adres factuuradres, Errors factuurerrors,@ModelAttribute("klantID") Long klantID,
-            Model model, Principal principal) {
+    public String processFactuurAdresGegevens(@ModelAttribute("adres")@Valid Adres adres, Errors errors,@ModelAttribute("factuuradres")@Valid Adres factuuradres, Errors factuurerrors,@ModelAttribute("klantID") Long klantID
+            ) {
     
         if (factuurerrors.hasErrors()) {
-    		model.addAttribute("factuuradres",factuuradres) 	;
-    		model.addAttribute("klant_id", klantID);
-        if (factuuradres.getAdresType().equals(AdresType.FACTUURADRES)) {
+        //	model.addAttribute("adres", adres);
+        //	model.addAttribute("klant_id", klantID);
+    	//	model.addAttribute("factuuradres",factuuradres) 	;
+    		
+    		 
+      
+            return "mijnAdres";
         
-            return "mijnAdres";
-        } else {
-            return "mijnAdres";
-        }
     }
 
         Klant klant = klantRepo.findById(klantID).get();
+        factuuradres.setAdresType(AdresType.FACTUURADRES);
     factuuradres.setKlant(klant);
     adresRepo.save(factuuradres);
     

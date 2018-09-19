@@ -114,7 +114,7 @@ public class KlantController {
 
                     // Zet de sessionAttribute
                     model.addAttribute("klantID", mutKlant.getId());
-
+                    model.addAttribute("accountID", mutKlant.getAccount().getId());
                     boolean postAdresAdded = false;
                     List<Adres> adresList = adresRepo.findAdresByKlant(id);
                     for (int i = 0; i < adresList.size(); i++) {
@@ -203,51 +203,27 @@ public class KlantController {
 
     @PostMapping("/klantForm")
     public String processKlant(Model model, @Valid Klant klant, Errors klanterrors, @ModelAttribute("postadres")@Valid Adres postAdres,Errors adreserrors,
-    		@ModelAttribute ("account")@Valid Account account, Errors accounterrors,  
-            @SessionAttribute("adresID") Long adresID) {
+    @SessionAttribute("adresID") Long adresID, @SessionAttribute("accountID") Long accountID) {
 
         if (klanterrors.hasErrors()) {
       
             if (klant.getId() == null) {
-                return "klantNieuw";
+                return "klant";
             } else {
-                return "klantNieuw";
+                return "klant";
             }
         }
 
         if (adreserrors.hasErrors()) {
   
             if (klant.getId() == null) {
-                return "klantNieuw";
+                return "klant";
             } else {
-                return "klantNieuw";
+                return "klant";
             }
         }
         
-        if (accounterrors.hasErrors()) {
- 
-            if (klant.getId() == null) {
-                return "klantNieuw";
-            } else {
-                return "klantNieuw";
-            }
-        }
-        try {
-        
-            account.setPassword(BCrypt.hashpw(account.getPassword(),BCrypt.gensalt(12)));
-           
-            Account accountDB = accountRepo.save(account);
-            klant.setAccount(accountDB);
-          
-            }
-            catch(Exception ex) {
-            	
-            	String message = "usernaam bestaat al kies een andere!";
-            	model.addAttribute("message", message);
-            	  return "klantNieuw";
-            }
-          
-            
+               
         
         Klant klantDB = klantRepo.save(klant);
 
