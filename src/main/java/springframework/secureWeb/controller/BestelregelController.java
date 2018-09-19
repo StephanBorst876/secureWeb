@@ -224,7 +224,6 @@ public class BestelregelController {
 			@SessionAttribute("bijbehorendeBestellingId") Long bestellingId,
 			@SessionAttribute("teMuterenBestelregel") Bestelregel oudeBestelregel) {
 		if(bestelregelErrors.hasErrors()) {
-			System.out.println("er zijn errors");
 			return "bestelregelMuteer";
 		}
 		
