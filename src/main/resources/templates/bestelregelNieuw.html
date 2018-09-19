@@ -34,7 +34,7 @@
                 		<div th:object="${bestelling}">
                 			<tr th:if="${klantOptieToevoegen != null}"><td class=text>Klant : </td>
 								<td><select th:field="*{klant}">
-                			<option th:each="klant : ${klanten}" th:value="${klant.id}" th:text="${klant.voornaam}">
+                			<option th:each="klant : ${klanten}" th:value="${klant.id}" th:text="${klant.voornaam+' '+klant.tussenvoegsel+' '+klant.achternaam}">
                 			</option></select></td></tr>
                 		</div>    				
                 		
