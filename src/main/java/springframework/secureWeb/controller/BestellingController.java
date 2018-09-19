@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import springframework.secureWeb.data.AccountRepository;
@@ -63,15 +62,10 @@ public class BestellingController {
 		return "bestellingen";
 	}
 
-	@RequestMapping("/bestelling/nieuw")
+	@GetMapping("/bestelling/nieuw")
 	public String nieuweBestelling() {
 		return "redirect:/bestelregel/nieuw/";
 	}
-
-	/*
-	 * @RequestMapping("/mijnbestelling/nieuw") public String nieuweMijnBestelling()
-	 * { return "redirect:/bestelregel/nieuw/"; }
-	 */
 
 	@PostMapping("/bestelling/verwijder/{bestellingId}")
 	public String bestellingVerwijder(@PathVariable("bestellingId") String bestellingId, Principal principal) {

@@ -56,7 +56,7 @@ public class BestelregelController {
 		this.accountRepo = accountRepo;
 	}
 
-	@RequestMapping("bestelregels/{bestellingId}")
+	@GetMapping("bestelregels/{bestellingId}")
 	public String Bestelregels(Model model, @PathVariable("bestellingId") String bestellingId, Principal principal) {
 		try {
 			long bestellingIdLong = Long.valueOf(bestellingId);
@@ -80,25 +80,29 @@ public class BestelregelController {
 	@GetMapping("/bestelregel/nieuw/{bestellingId}")
 	public String bestelregelNieuw(Model model, @PathVariable("bestellingId") String bestellingId,
 			Principal principal) {
-		long bestellingIdLong = Long.valueOf(bestellingId);
-		Bestelling bestelling = bestellingRepo.findById(bestellingIdLong).get();
+		try {
+			long bestellingIdLong = Long.valueOf(bestellingId);
+			Bestelling bestelling = bestellingRepo.findById(bestellingIdLong).get();
 
-		List<Klant> klantList = new ArrayList<>();
-		klantRepo.findAll().forEach(i -> klantList.add(i));
+			List<Klant> klantList = new ArrayList<>();
+			klantRepo.findAll().forEach(i -> klantList.add(i));
 
-		List<Artikel> artikelList = new ArrayList();
-		artikelRepo.findAll().forEach(i -> artikelList.add(i));
+			List<Artikel> artikelList = new ArrayList();
+			artikelRepo.findAll().forEach(i -> artikelList.add(i));
 
-		if (heeftToegangTotBestelling(principal, bestelling)) {
+			if (heeftToegangTotBestelling(principal, bestelling)) {
 
-			model.addAttribute("klanten", klantList);
-			model.addAttribute("artikelen", artikelList);
-			model.addAttribute("bestellingIdLong", bestellingIdLong);
-			model.addAttribute("bestelregel", new Bestelregel());
-			model.addAttribute("artikel", new Artikel());
-			model.addAttribute("bestelling", bestelling);
+				model.addAttribute("klanten", klantList);
+				model.addAttribute("artikelen", artikelList);
+				model.addAttribute("bestellingIdLong", bestellingIdLong);
+				model.addAttribute("bestelregel", new Bestelregel());
+				model.addAttribute("artikel", new Artikel());
+				model.addAttribute("bestelling", bestelling);
 
-			return "bestelregelNieuw";
+				return "bestelregelNieuw";
+			}
+		} catch (NumberFormatException e) {
+
 		}
 		return "redirect:/bestelling";
 	}
@@ -150,26 +154,29 @@ public class BestelregelController {
 		return "redirect:bestelregels/" + bestelregel.getBestelling().getId();
 	}
 
-	// hier moet nog een check op toegang plaatsvinden
-	@RequestMapping("bestelregel/muteer/{bestelregelId}")
-	public String BestelregelMuteer(Model model, @PathVariable("bestelregelId") String bestelregelId) {
+	@GetMapping("bestelregel/muteer/{bestelregelId}")
+	public String BestelregelMuteer(Model model, @PathVariable("bestelregelId") String bestelregelId,
+			Principal principal) {
 		try {
-
 			Long id = Long.valueOf(bestelregelId);
 			Bestelregel bestelregel = bestelregelRepo.findById(id).get();
 
-			model.addAttribute("teMuterenBestelregel", bestelregel);
-			model.addAttribute("artikel", new Artikel());
+			if (heeftToegangTotBestelling(principal, bestelregel.getBestelling())) {
 
-			List<Artikel> artikelList = new ArrayList();
-			artikelRepo.findAll().forEach(i -> artikelList.add(i));
-			model.addAttribute("artikelen", artikelList);
-			model.addAttribute("bijbehorendeBestellingId", bestelregel.getBestelling().getId());
+				model.addAttribute("teMuterenBestelregel", bestelregel);
+				model.addAttribute("artikel", new Artikel());
 
-			return "bestelregelMuteer";
+				List<Artikel> artikelList = new ArrayList();
+				artikelRepo.findAll().forEach(i -> artikelList.add(i));
+				model.addAttribute("artikelen", artikelList);
+				model.addAttribute("bijbehorendeBestellingId", bestelregel.getBestelling().getId());
+
+				return "bestelregelMuteer";
+			}
 		} catch (NumberFormatException ex) {
 			return "redirect:/main";
 		}
+		return "redirect:/main";
 	}
 
 	@PostMapping("/bestelregel/verwijder/{bestelregelId}")
