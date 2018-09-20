@@ -10,7 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.ColumnDefault;
 
 /**
@@ -33,9 +36,12 @@ public class Artikel implements Serializable {
     private String naam;
 
     @ColumnDefault("0.00")
-    private BigDecimal prijs;
+    @Min(0)
+    @NotNull(message = "prijs = verplicht")
+     private BigDecimal prijs;
 
     @ColumnDefault("0")
+    @Min(1)
     private int voorraad;
 
     public Artikel() {

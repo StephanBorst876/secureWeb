@@ -23,7 +23,7 @@
             <div>
                 <h1>Klant toevoegen</h1>
             </div> 
-            <form name="klantForm" th:action="@{/klantForm}" method="post" th:object="${klant}">
+            <form name="klantNieuwForm" th:action="@{/klantNieuwForm}" method="post" th:object="${klant}">
                 <input type="hidden" th:field="*{id}"/>
          
 		
@@ -136,7 +136,7 @@
 				<tr>
 					 <td>
                             <ul >
-                                <li ><a  href="javascript: document.klantForm.submit()" >Toevoegen</a></li>
+                                <li ><a  href="javascript: document.klantNieuwForm.submit()" >Toevoegen</a></li>
                             </ul>
                         </td>
 			</tr>

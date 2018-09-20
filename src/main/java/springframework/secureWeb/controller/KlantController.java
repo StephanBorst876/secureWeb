@@ -196,8 +196,7 @@ public class KlantController {
         model.addAttribute("postadres", postAdres);
 
         // Zet adresID in sessionAttribute
-      
-        model.addAttribute("adresID", 0L);
+         model.addAttribute("adresID", 0L);
         return "klantNieuw";
     }
 
@@ -293,5 +292,53 @@ public class KlantController {
         return "redirect:/main";
 
     }
-    
+
+    @PostMapping("/klantNieuwForm")
+    public String processNieuwKlant(Model model, @Valid Klant klant, Errors klanterrors, @ModelAttribute("postadres")@Valid Adres postAdres,Errors adreserrors,@Valid Account account, Errors accounterrors,  
+    @SessionAttribute("adresID") Long adresID, @SessionAttribute("accountID") Long accountID) {
+
+        if (klanterrors.hasErrors()) {
+      
+            if (klant.getId() == null) {
+                return "klantNieuw";
+            } else {
+                return "klantNieuw";
+            }
+        }
+
+        if (adreserrors.hasErrors()) {
+  
+            if (klant.getId() == null) {
+                return "klantNieuw";
+            } else {
+                return "klantNieuw";
+            }
+        }
+        if (accounterrors.hasErrors()) {
+        	return"klantNieuw";
+        }
+        try {
+        	account.setId(accountID);
+            account.setPassword(BCrypt.hashpw(account.getPassword(),BCrypt.gensalt(12)));
+            Account accountDB = accountRepo.save(account);
+            klant.setAccount(accountDB);
+            }
+            catch(Exception ex) {
+            	String message = "usernaam bestaat al kies een andere!";
+            	model.addAttribute("message", message);
+            	  return "mijnKlantGegevens";
+            }
+               
+        
+        Klant klantDB = klantRepo.save(klant);
+
+        postAdres.setId(adresID); // Bewaard in sessionAttr 
+        postAdres.setKlant(klantDB);
+        postAdres.setAdresType(AdresType.POSTADRES);
+        adresRepo.save(postAdres);
+
+        // Nu terug naar de Get op /klanten om de gehele lijst te tonen
+        return "redirect:/klanten";
+
+    }
 }
