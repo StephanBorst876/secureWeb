@@ -30,7 +30,7 @@ import springframework.secureWeb.domein.Bestelregel;
 import springframework.secureWeb.domein.Klant;
 
 @SessionAttributes({ "bestellingIdLong", "artikelen", "bestelling", "klanten", "bestellingId", "teMuterenBestelregel",
-		"bijbehorendeBestellingId" })
+		"bijbehorendeBestellingId", "klantOptieToevoegen" })
 @Controller
 public class BestelregelController {
 
@@ -135,11 +135,11 @@ public class BestelregelController {
 		if (bestelregelErrors.hasFieldErrors()) { //kan in principe met voorraad worden samengevoegd in OR-constructie?
 			//als er fouten zijn en de bestelling wel al bestaat
 			if(bestellingIdLong==0L) {
-				return "redirect:bestelregel/nieuw";
+				return "bestelregelNieuw";
 			}
 			//als er fouten zijn en de bestelling wel al bestaat
 			else {
-				return "redirect:bestelregel/nieuw/"+bestellingIdLong;
+				return "bestelregelNieuw"+bestellingIdLong;
 			}
 		}
 		//controleer of artikelvoorraad voldoet
@@ -186,6 +186,7 @@ public class BestelregelController {
 
 				model.addAttribute("teMuterenBestelregel", bestelregel);
 				model.addAttribute("artikel", new Artikel());
+				model.addAttribute("bestelregel", new Bestelregel());
 
 				List<Artikel> artikelList = new ArrayList();
 				artikelRepo.findAll().forEach(i -> artikelList.add(i));
@@ -223,7 +224,8 @@ public class BestelregelController {
 	public String processBestelregelMuteer(Model model, @Valid Bestelregel bestelregel, Errors bestelregelErrors,
 			@SessionAttribute("bijbehorendeBestellingId") Long bestellingId,
 			@SessionAttribute("teMuterenBestelregel") Bestelregel oudeBestelregel) {
-		if(bestelregelErrors.hasErrors()) {
+		if(bestelregelErrors.hasFieldErrors()) {
+			System.out.println("hij gaat idd terug naar bestelregelMuteer");
 			return "bestelregelMuteer";
 		}
 		
