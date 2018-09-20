@@ -56,6 +56,10 @@
                     <tr>
                         <td class=text>Postcode : </td>
                         <td><input type="text" th:field="${adres.postcode}"/></td>
+                        <td>  <span class="validationError"
+                              th:if="${#fields.hasErrors('postcode')}" 
+                              th:errors="*{postcode}">woonplaats is verplicht!</span>
+                         </td>
                     </tr>
                     <tr>
                         <td class=text>Woonplaats : </td>

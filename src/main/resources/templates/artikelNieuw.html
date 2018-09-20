@@ -25,21 +25,28 @@
             </div> 
             <form name="artikelForm" th:action="@{/artikelForm}" method="post" th:object="${artikel}">
                 <input type="hidden" th:field="*{id}"/>
-                <span class="validationError"
-                      th:if="${#fields.hasErrors('naam')}" 
-                      th:errors="*{naam}">Artikelnaam moet ingevuld!</span>
+        
                 <table>
                     <tr>
                         <td class=text>Artikelnaam : </td>
                         <td><input type="text" th:field="*{naam}"/></td>
+                        <td>     <span class="validationError"
+                      th:if="${#fields.hasErrors('naam')}" 
+                      th:errors="*{naam}">Artikelnaam moet ingevuld!</span></td>
                     </tr>
                     <tr>
                         <td class=text>Prijs : </td>
                         <td><input type="number" min="0" step="any"  th:field="*{prijs}"/></td>
+                        <td>     <span class="validationError"
+                      th:if="${#fields.hasErrors('prijs')}" 
+                      th:errors="*{prijs}">prijs moet ingevuld!</span></td>
                     </tr>
                     <tr>
                         <td class=text>Voorraad : </td>
                         <td><input type="number" min="0" th:field="*{voorraad}"/></td>
+                        <td>     <span class="validationError"
+                      th:if="${#fields.hasErrors('voorraad')}" 
+                      th:errors="*{voorraad}">voorraad moet ingevuld!</span></td>
                     </tr>
                     <tr>
                         <td colspan=2>

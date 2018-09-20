@@ -46,12 +46,12 @@ public class Account implements Serializable, UserDetails {
 
     @Column(name = "username", length = 45, unique = true)
     @ColumnDefault("null")
-    @NotBlank(message = "Usernaam = verplicht!")
+    @NotBlank(message = "Usernaam is verplicht!")
     private String userNaam;
 
     @Column(length = 60)
     @ColumnDefault("null")
-    @NotBlank(message = "password = verplicht!")
+    @NotBlank(message = "password is verplicht!")
     private String password;
 
     @Enumerated(EnumType.STRING)

@@ -24,32 +24,34 @@
 	<fieldset style="width: 75%;">
 		<div>
 			<h1>Account invoeren</h1>
-					 <p th:text="${message}" />
+			<p th:text="${message}" />
 		</div>
-		
 
-		<form name="accountNieuwForm" th:action="@{/accountNieuwForm}" method="post"
-			th:object="${account}">
+
+		<form name="accountNieuwForm" th:action="@{/accountNieuwForm}"
+			method="post" th:object="${account}">
 			<input type="hidden" th:field="*{id}" />
-			 <span
-				class="validationError" th:if="${#fields.hasErrors('userNaam')}"
-				th:errors="*{userNaam}">usernaam moet ingevuld!</span>
-				 <span
-				class="validationError" th:if="${#fields.hasErrors('password')}"
-				th:errors="*{password}">password moet ingevuld!</span>
+
+
 			<table>
 				<tr>
 					<td class=text>usernaam :</td>
 					<td><input type="text" th:field="*{userNaam}" /></td>
+					<td><span class="validationError"
+						th:if="${#fields.hasErrors('userNaam')}" th:errors="*{userNaam}">usernaam
+							moet ingevuld!</span></td>
 				</tr>
 				<tr>
 					<td class=text>Password :</td>
 					<td><input type="password" th:field="*{password}" /></td>
+					<td><span class="validationError"
+						th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password
+							moet ingevuld!</span></td>
 				</tr>
 				<tr>
 					<td class=text>Rol :</td>
 					<td class=left><select name="rol" id="rol">
-							<option value="klant">klant</option>
+
 							<option value="medewerker">medewerker</option>
 							<option value="beheerder">beheerder</option>
 					</select></td>

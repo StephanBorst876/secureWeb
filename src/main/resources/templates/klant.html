@@ -31,9 +31,6 @@
                 <input type="hidden" th:field="*{account}"/>
 
                 <span class="validationError"
-                      th:if="${#fields.hasErrors('voornaam')}" 
-                      th:errors="*{voornaam}">Voornaam moet ingevuld!</span>
-                <span class="validationError"
                       th:if="${#fields.hasErrors('achternaam')}" 
                       th:errors="*{achternaam}">Achternaam moet ingevuld!</span>
 		
@@ -44,6 +41,10 @@
                     <tr>
                         <td class=text>Voornaam : </td>
                         <td><input type="text" th:field="*{voornaam}"/></td>
+                        <td>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('voornaam')}" 
+                      th:errors="*{voornaam}">Voornaam moet ingevuld!</span></td>
                     </tr>
                     <tr>
                         <td class=text>Tussenvoegsel : </td>

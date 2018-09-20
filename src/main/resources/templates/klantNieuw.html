@@ -27,17 +27,14 @@
                 <input type="hidden" th:field="*{id}"/>
          
 		
-     <span class="validationError"
-                      th:if="${#fields.hasErrors('voornaam')}" 
-                      th:errors="*{voornaam}"></span>
-                <span class="validationError"
-                      th:if="${#fields.hasErrors('achternaam')}" 
-                      th:errors="*{achternaam}"></span>
-
+  
                 <table>
                     <tr>
                         <td class=text>Voornaam : </td>
                         <td><input type="text" th:field="*{voornaam}"/></td>
+                        <td>   <span class="validationError"
+                      th:if="${#fields.hasErrors('voornaam')}" 
+                      th:errors="*{voornaam}"></span></td>
                     </tr>
                     <tr>
                         <td class=text>Tussenvoegsel : </td>
@@ -46,6 +43,11 @@
                     <tr>
                         <td class=text>Achternaam : </td>
                         <td><input type="text" th:field="*{achternaam}"/></td>
+                        <td>
+                <span class="validationError"
+                      th:if="${#fields.hasErrors('achternaam')}" 
+                      th:errors="*{achternaam}"></span>
+                        </td>
                     </tr>
 		
 				
@@ -54,19 +56,16 @@
                     <div th:object="${postadres}" >
                
              
-                    <span class="validationError"
-                              th:if="${#fields.hasErrors('straatnaam')}" 
-                              th:errors="*{straatnaam}"></span>
-                              <span class="validationError"
-                              th:if="${#fields.hasErrors('woonplaats')}" 
-                              th:errors="*{woonplaats}"></span>
-                    
+                   
               
                        
                  <tr><td class=text>Postadres</td>
                         <tr>
                             <td class=text>Straatnaam : </td>
                             <td><input type="text" th:field="*{straatnaam}"/></td>
+                            <td>  <span class="validationError"
+                              th:if="${#fields.hasErrors('straatnaam')}" 
+                              th:errors="*{straatnaam}"></span></td>
                         </tr>
                         <tr>
                             <td class=text>Huisnummer : </td>
@@ -79,10 +78,18 @@
                         <tr>
                             <td class=text>Postcode : </td>
                             <td><input type="text" th:field="*{postcode}"/></td>
+                            <td>       <span class="validationError"
+                              th:if="${#fields.hasErrors('postcode')}" 
+                              th:errors="*{postcode}"></span></td>
                         </tr>
                         <tr>
                             <td class=text>Woonplaats : </td>
                             <td><input type="text" th:field="*{woonplaats}"/></td>
+                            <td>
+                              <span class="validationError"
+                              th:if="${#fields.hasErrors('woonplaats')}" 
+                              th:errors="*{woonplaats}"></span>
+                    </td>
                         </tr>
                         </table>
                     </div>
@@ -106,20 +113,22 @@
 		</div>
 		  <div th:object="${account}" >
 
-			 <span
-				class="validationError" th:if="${#fields.hasErrors('userNaam')}"
-				th:errors="*{userNaam}">usernaam moet ingevuld!</span>
-				 <span
-				class="validationError" th:if="${#fields.hasErrors('password')}"
-				th:errors="*{password}">password moet ingevuld!</span>
 			<table>
 				<tr>
 					<td class=text>usernaam :</td>
 					<td><input type="text" th:field="*{userNaam}" /></td>
+					<td>
+			 <span
+				class="validationError" th:if="${#fields.hasErrors('userNaam')}"
+				th:errors="*{userNaam}">usernaam moet ingevuld!</span></td>
 				</tr>
 				<tr>
 					<td class=text>Password :</td>
 					<td><input type="password" th:field="*{password}" /></td>
+					<td>
+				 <span
+				class="validationError" th:if="${#fields.hasErrors('password')}"
+				th:errors="*{password}">password moet ingevuld!</span></td>
 				</tr>
 				<tr>
 					<td class=text>Rol :</td>

@@ -295,7 +295,7 @@ public class KlantController {
 
     @PostMapping("/klantNieuwForm")
     public String processNieuwKlant(Model model, @Valid Klant klant, Errors klanterrors, @ModelAttribute("postadres")@Valid Adres postAdres,Errors adreserrors,@Valid Account account, Errors accounterrors,  
-    @SessionAttribute("adresID") Long adresID, @SessionAttribute("accountID") Long accountID) {
+    @SessionAttribute("adresID") Long adresID/*, @SessionAttribute("accountID") Long accountID*/) {
 
         if (klanterrors.hasErrors()) {
       
@@ -318,7 +318,7 @@ public class KlantController {
         	return"klantNieuw";
         }
         try {
-        	account.setId(accountID);
+        	/*account.setId(accountID);*/
             account.setPassword(BCrypt.hashpw(account.getPassword(),BCrypt.gensalt(12)));
             Account accountDB = accountRepo.save(account);
             klant.setAccount(accountDB);

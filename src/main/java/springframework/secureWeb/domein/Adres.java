@@ -10,7 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -50,6 +53,8 @@ public class Adres implements Serializable{
 
     private int huisnummer;
     private String toevoeging;
+
+    @Pattern (regexp ="[1-9][0-9]{3}[\\s]?[a-zA-Z]{2}", message = "postcode 4 cijfers 2 letters")
     private String postcode;
     @NotBlank(message = "Woonplaats is verplicht!")
     private String woonplaats;
