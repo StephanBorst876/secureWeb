@@ -77,7 +77,7 @@ public class ArtikelController {
 	@PostMapping("/artikelForm")
 	public String processArtikel(@Valid Artikel artikel, Errors errors) {
 		if (errors.hasErrors()) {
-			return "artikel";
+			return "artikelNieuw";
 		}
 		artikelRepo.save(artikel);
 
