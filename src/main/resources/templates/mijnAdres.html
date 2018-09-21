@@ -31,12 +31,7 @@
 			method="post" th:object="${adres}">
 
 			<input type="hidden" th:field="${adres.id}" /> <input type="hidden"
-				th:field="${adres.adresType}" /> <span class="validationError"
-				th:if="${#fields.hasErrors('straatnaam')}" th:errors="*{straatnaam}">straatnaam
-				is verplicht!]</span> <span class="validationError"
-				th:if="${#fields.hasErrors('woonplaats')}" th:errors="*{woonplaats}">woonplaats
-				is verplicht!</span>
-
+				th:field="${adres.adresType}" />  
 
 
 
@@ -48,6 +43,9 @@
 				<tr>
 					<td class=text>Straatnaam :</td>
 					<td><input type="text" th:field="${adres.straatnaam}" /></td>
+					<td><span class="validationError"
+				th:if="${#fields.hasErrors('straatnaam')}" th:errors="*{straatnaam}">straatnaam
+				is verplicht!]</span></td>
 
 				</tr>
 				<tr>
@@ -63,11 +61,19 @@
 				<tr>
 					<td class=text>Postcode :</td>
 					<td><input type="text" th:field="${adres.postcode}" /></td>
+					<td><span class="validationError"
+				th:if="${#fields.hasErrors('postcode')}" th:errors="*{postcode}">postcode
+				is verplicht!</span>
+					</td>
 
 				</tr>
 				<tr>
 					<td class=text>Woonplaats :</td>
 					<td><input type="text" th:field="${adres.woonplaats}" /></td>
+					<td><span class="validationError"
+				th:if="${#fields.hasErrors('woonplaats')}" th:errors="*{woonplaats}">woonplaats
+				is verplicht!</span>
+					</td>
 				</tr>
 
 				<tr>
@@ -107,12 +113,7 @@
 			method="post" th:object="${factuuradres}">
 
 			<input type="hidden" th:field="${factuuradres.id}" /> <input
-				type="hidden" th:field="${factuuradres.adresType}" /> <span
-				class="validationError" th:if="${#fields.hasErrors('straatnaam')}"
-				th:errors="*{straatnaam}">straatnaam is verplicht!]</span> <span
-				class="validationError" th:if="${#fields.hasErrors('woonplaats')}"
-				th:errors="*{woonplaats}">woonplaats is verplicht!</span>
-
+				type="hidden" th:field="${factuuradres.adresType}" /> 
 
 
 
@@ -125,6 +126,9 @@
 					<td class=text>Straatnaam :</td>
 
 					<td><input type="text" th:field="${factuuradres.straatnaam}" /></td>
+					<td><span
+				class="validationError" th:if="${#fields.hasErrors('straatnaam')}"
+				th:errors="*{straatnaam}">straatnaam is verplicht!]</span></td>
 				</tr>
 				<tr>
 					<td class=text>Huisnummer :</td>
@@ -140,11 +144,19 @@
 					<td class=text>Postcode :</td>
 
 					<td><input type="text" th:field="${factuuradres.postcode}" /></td>
+					<td><span
+				class="validationError" th:if="${#fields.hasErrors('postcode')}"
+				th:errors="*{postcode}">woonplaats is verplicht!</span>
+					</td>
 					
 				</tr>
 				<tr>
 					<td class=text>Woonplaats :</td>
 					<td><input type="text" th:field="${factuuradres.woonplaats}" /></td>
+					<td><span
+				class="validationError" th:if="${#fields.hasErrors('woonplaats')}"
+				th:errors="*{woonplaats}">woonplaats is verplicht!</span>
+					</td>
 				</tr>
 
 				<tr>

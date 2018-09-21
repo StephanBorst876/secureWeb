@@ -30,9 +30,7 @@
                 <input type="hidden" th:field="${klant.id}"/>
                 <input type="hidden" th:field="*{account}"/>
 
-                <span class="validationError"
-                      th:if="${#fields.hasErrors('achternaam')}" 
-                      th:errors="*{achternaam}">Achternaam moet ingevuld!</span>
+                
 		
 
 	
@@ -53,16 +51,15 @@
                     <tr>
                         <td class=text>Achternaam : </td>
                         <td><input type="text" th:field="*{achternaam}"/></td>
+                        <td><span class="validationError"
+                      th:if="${#fields.hasErrors('achternaam')}" 
+                      th:errors="*{achternaam}">Achternaam moet ingevuld!</span></td>
                     </tr>
 
                     <div th:object="${postadres}" >
 
-                              <span class="validationError"
-                              th:if="${#fields.hasErrors('straatnaam')}" 
-                              th:errors="*{straatnaam}">Straatnaam = verplicht!</span>
-                              <span class="validationError"
-                              th:if="${#fields.hasErrors('woonplaats')}" 
-                              th:errors="*{woonplaats}">Straatnaam = verplicht!</span>
+                           
+                              
 
                         <tr><td class=text>Postadres</td>
                             <input type="hidden" th:field="*{adresType}"/>
@@ -74,6 +71,9 @@
                         <tr>
                             <td class=text>Straatnaam : </td>
                             <td><input type="text" th:field="*{straatnaam}"/></td>
+                            <td>   <span class="validationError"
+                              th:if="${#fields.hasErrors('straatnaam')}" 
+                              th:errors="*{straatnaam}">Straatnaam = verplicht!</span></td>
                         </tr>
                         <tr>
                             <td class=text>Huisnummer : </td>
@@ -86,10 +86,16 @@
                         <tr>
                             <td class=text>Postcode : </td>
                             <td><input type="text" th:field="*{postcode}"/></td>
+                            <td>   <span class="validationError"
+                              th:if="${#fields.hasErrors('postcode')}" 
+                              th:errors="*{postcode}">postcode = verplicht!</span></td>
                         </tr>
                         <tr>
                             <td class=text>Woonplaats : </td>
                             <td><input type="text" th:field="*{woonplaats}"/></td>
+                            <td><span class="validationError"
+                              th:if="${#fields.hasErrors('woonplaats')}" 
+                              th:errors="*{woonplaats}">woonplaats = verplicht!</span></td>
                         </tr>
                         <tr>
                             <td class=text>Bezorgadres : </td>
