@@ -41,9 +41,9 @@ public class Artikel implements Serializable {
 	@NotNull(message = "prijs = verplicht")
 	private BigDecimal prijs;
 
-	@ColumnDefault("0")
 	@Min(0)
-	private int voorraad;
+	@NotNull
+	private Integer voorraad;
 
 	public Artikel() {
 
@@ -107,7 +107,7 @@ public class Artikel implements Serializable {
 	/**
 	 * @return the voorraad
 	 */
-	public int getVoorraad() {
+	public Integer getVoorraad() {
 		return voorraad;
 	}
 
@@ -115,7 +115,7 @@ public class Artikel implements Serializable {
 	 * @param voorraad
 	 *            the voorraad to set
 	 */
-	public void setVoorraad(int voorraad) {
+	public void setVoorraad(Integer voorraad) {
 		this.voorraad = voorraad;
 	}
 
