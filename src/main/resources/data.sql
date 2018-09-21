@@ -11,10 +11,10 @@ INSERT INTO artikel VALUES (69,'mozzarella',3.04,123);
 
 INSERT INTO account (id,username,password,rol) VALUES (204,'boer','$2a$10$Kjrtr2Mm6v/HzA2YAHVihejqb3uiKzUDNbJGcIWTP5W2T5BGXowYO','beheerder');
 INSERT INTO account (id,username,password,rol) VALUES (205,'Pascal','$2a$12$a3mmayZiUfvPntn7GUVeLu5dcQMEaDg83CuJkU3rcjWlFvIuZeo4m','klant');
-INSERT INTO account (id,username,password,rol) VALUES (206,'Olaf','$2a$10$6gb18xtFEIji9ADyEYUti.RCQOAfUDtgKoiBz1npg/evN5LrTUNYe','medewerker');
+INSERT INTO account (id,username,password,rol) VALUES (206,'Olaf','$2a$12$sByavLS.cRc6YGf3AvKKtuhAaW/6PJpePkPdm7p/wpkhwd.T4pgIu','medewerker');
 INSERT INTO account (id,username,password,rol) VALUES (207,'Liz','$2a$12$o/gbDUwHgWdMsiuYVJMDWekIGywHz6Y.LnvvWDj.QRcB6IEkrT/xG','klant');
 INSERT INTO account (id,username,password,rol) VALUES (321,'Karel','$2a$12$UkZBgb7LrYQGYNG96c3n6OpBdf8o6s4QIvoCLiTiutaefsU6r31xS','klant');
-INSERT INTO account (id,username,password,rol) VALUES (322,'Klant','$2a$12$eh4wg5izU2jCKhrB13f.sOauo0NkJqF2rmrEpP7HQBiEpqF/3W.yu','klant');
+INSERT INTO account (id,username,password,rol) VALUES (322,'Klant','$2a$12$vr86u/1t.wM0yUVGnF8jp.vnnLdOy24FZjRSFsOhUNkgXdd4kQsdu','klant');
 
 INSERT INTO klant (id,voornaam,tussenvoegsel,achternaam,account_id) VALUES (206,'liz','','natukunda',207);
 INSERT INTO klant (id,voornaam,tussenvoegsel,achternaam,account_id) VALUES (237,'Karel','de','Grote',321);
