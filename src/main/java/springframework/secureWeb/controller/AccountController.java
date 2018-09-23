@@ -1,5 +1,6 @@
 package springframework.secureWeb.controller;
 
+import java.security.Principal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +101,9 @@ public class AccountController {
     }
     
     @PostMapping("/accountMuteerForm")
-    public String processAccountMuteer(Model model, @Valid Account account, Errors errors) {
+    public String processAccountMuteer(Model model, @Valid Account account, Errors errors, Principal principal) {
+    	Account ingelogdeAccount=accountRepo.findByuserNaam(principal.getName());
+    	String usernaamIngelogdeAccount=principal.getName();
         if (errors.hasErrors()) {
         	model.addAttribute("account", account);
             return "accountmuteer";
@@ -116,13 +119,35 @@ public class AccountController {
         catch(Exception ex) {
         	String message = "usernaam bestaat al kies een andere!";
         	model.addAttribute("message", message);
+        	
+        	
         	  return "accountmuteer";
         }
+        if(ingelogdeAccountWijzigtUsernaam(ingelogdeAccount, account, usernaamIngelogdeAccount)) {
+    		return "redirect:/login?logout";
+    	}
         // Nu terug naar de Get op /accounts om de gehele lijst te tonen
         return "redirect:/accounts";
     }
     
-    @PostMapping("/account/verwijder/{accountId}")
+    private boolean ingelogdeAccountWijzigtUsernaam(Account ingelogdeAccount, Account gewijzigdeAccount, String usernaamIngelogdeAccount) {
+		//eerst checken of de wijziging de ingelogde account betreft
+    	System.out.println(usernaamIngelogdeAccount);
+    	System.out.println("gegevens ingelogde account: id="+ingelogdeAccount.getId()+" naam="+ingelogdeAccount.getUserNaam());
+    	System.out.println("gegevens gewijzigde account: id="+gewijzigdeAccount.getId()+" naam="+gewijzigdeAccount.getUserNaam());
+		if (ingelogdeAccount.getId().equals(gewijzigdeAccount.getId())) {
+			System.out.println("id's komen overeen");
+			//vervolgens checken of de wijziging de Usernaam betreft
+			if (!usernaamIngelogdeAccount.equals(gewijzigdeAccount.getUserNaam())) {
+				System.out.println("namen komen niet overeen");
+				return true;
+			}
+		}
+		//in alle andere gevallen betreft het niet een wijziging van Usernaam van de ingelogde account
+		return false;
+	}
+
+	@PostMapping("/account/verwijder/{accountId}")
     public String verwijderAccount(Model model, @PathVariable("accountId") String accountId) {
     	try {
         Long id = Long.valueOf(accountId);
