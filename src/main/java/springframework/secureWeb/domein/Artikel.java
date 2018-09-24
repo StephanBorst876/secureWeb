@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -33,16 +32,16 @@ public class Artikel implements Serializable {
 
 	@Column(length = 45)
 	@ColumnDefault("null")
-	@NotBlank(message = "Artikelnaam = verplicht!")
+	@NotBlank(message = "Artikelnaam moet ingevuld!")
 	private String naam;
 
 	@ColumnDefault("0.00")
 	@Min(0)
-	@NotNull(message = "prijs = verplicht")
+	@NotNull(message = "Prijs moet ingevuld en positief!")
 	private BigDecimal prijs;
 
 	@Min(0)
-	@NotNull
+	@NotNull(message = "Voorraad moet ingevuld en positief!")
 	private Integer voorraad;
 
 	public Artikel() {
