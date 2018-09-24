@@ -33,7 +33,7 @@
                 	<table>
                 		<div th:object="${bestelling}">
                 			<tr th:if="${klantOptieToevoegen != null}"><td class=text>Klant : </td>
-								<td><select th:field="*{klant}">
+								<td class=left><select th:field="*{klant}">
                 			<option th:each="klant : ${klanten}" th:value="${klant.id}" th:text="${klant.voornaam+' '+klant.tussenvoegsel+' '+klant.achternaam}">
                 			</option></select></td></tr>
                 		</div>    				
@@ -46,7 +46,7 @@
               
                     	<tr>
                         	<td class=text>Aantal : </td>
-                        	<td><input type="number" th:field="*{aantal}"/></td>
+                        	<td class=left><input type="number" th:field="*{aantal}"/></td>
                         	<td><span class="validationError" th:if="${#fields.hasErrors('aantal')}" th:errors="*{aantal}">Aantal moet positief zijn</span></td>
                         	<!--<td th:if="${voorraadVoldoetNietMessage==true}" class=text>Gekozen aantal van artikel is niet voorradig, kies opnieuw</td>-->
                     	</tr>

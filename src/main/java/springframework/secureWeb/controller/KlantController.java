@@ -239,7 +239,7 @@ public class KlantController {
     @PostMapping("/klantGegevensForm")
     public String processKlantGegevens(Model model,@Valid Klant klant, Errors klanterrors, @ModelAttribute("postadres")@Valid Adres postAdres,Errors adreserrors,
     		@ModelAttribute ("account")@Valid Account account, Errors accounterrors,  
-            @SessionAttribute("adresID") Long adresID, @SessionAttribute("accountID") Long accountID) {
+            @SessionAttribute("adresID") Long adresID, @SessionAttribute("accountID") Long accountID, Principal principal) {
 
         if (klanterrors.hasErrors()) {
        
@@ -288,7 +288,12 @@ public class KlantController {
         postAdres.setAdresType(AdresType.POSTADRES);
         adresRepo.save(postAdres);
 
-        // Nu terug naar de Get op /klanten om de gehele lijst te tonen
+        
+      //als de accountnaam aangepast wordt, dan uitloggen, om geen problemen met principal te krijgen
+        if(!principal.getName().equals(account.getUserNaam())) {
+        	return "redirect:/login?logout";
+        }
+        
         return "redirect:/main";
 
     }
@@ -336,7 +341,7 @@ public class KlantController {
         postAdres.setKlant(klantDB);
         postAdres.setAdresType(AdresType.POSTADRES);
         adresRepo.save(postAdres);
-
+        
         // Nu terug naar de Get op /klanten om de gehele lijst te tonen
         return "redirect:/klanten";
 

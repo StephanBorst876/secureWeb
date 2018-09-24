@@ -58,7 +58,7 @@ public class Bestelregel implements Serializable {
 	public int getAantal() {
 		return aantal;
 	}
-
+	
 	public void setAantal(int aantal) {
 		this.aantal = aantal;
 	}

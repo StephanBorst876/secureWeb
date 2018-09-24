@@ -124,7 +124,7 @@ public class AccountController {
         	  return "accountmuteer";
         }
         if(ingelogdeAccountWijzigtUsernaam(ingelogdeAccount, account, usernaamIngelogdeAccount)) {
-    		return "redirect:/login?logout";
+           		return "redirect:/login?logout";
     	}
         // Nu terug naar de Get op /accounts om de gehele lijst te tonen
         return "redirect:/accounts";
@@ -132,14 +132,9 @@ public class AccountController {
     
     private boolean ingelogdeAccountWijzigtUsernaam(Account ingelogdeAccount, Account gewijzigdeAccount, String usernaamIngelogdeAccount) {
 		//eerst checken of de wijziging de ingelogde account betreft
-    	System.out.println(usernaamIngelogdeAccount);
-    	System.out.println("gegevens ingelogde account: id="+ingelogdeAccount.getId()+" naam="+ingelogdeAccount.getUserNaam());
-    	System.out.println("gegevens gewijzigde account: id="+gewijzigdeAccount.getId()+" naam="+gewijzigdeAccount.getUserNaam());
 		if (ingelogdeAccount.getId().equals(gewijzigdeAccount.getId())) {
-			System.out.println("id's komen overeen");
 			//vervolgens checken of de wijziging de Usernaam betreft
 			if (!usernaamIngelogdeAccount.equals(gewijzigdeAccount.getUserNaam())) {
-				System.out.println("namen komen niet overeen");
 				return true;
 			}
 		}

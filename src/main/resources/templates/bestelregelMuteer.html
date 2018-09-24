@@ -28,18 +28,28 @@
 		</div>
 
 		<form name="bestelregelMuteerForm" th:action="@{/bestelregelMuteerForm}"
-			method="post" th:object="${bestelregel}">
-			<input type="hidden" th:field="*{id}" />
+			method="post" th:object="${teMuterenBestelregel}">
+			<!--<input type="hidden" th:field="*{id}" />-->
 			<table>
 				<tr><td class=text>Artikel : </td>
-                		<td><select th:field="*{artikel}">
+                		<td class=left><select th:field="*{artikel}">
                 				<option th:each="artikel : ${artikelen}" th:value="${artikel.id}" th:text="${artikel.naam}+' - prijs: '+${artikel.prijs}+' euro - voorraad: '+${artikel.voorraad}">
                 				</option></select></td></tr>
               
                 <tr>
-                        	<td class=text>Aantal : </td>
-                        	<td><input type="number" th:field="*{aantal}"/></td>
-                        	<td><span class="validationError" th:if="${#fields.hasErrors('aantal')}" th:errors="*{aantal}">Aantal moet positief zijn</span></td>
+                        	<td><span class="validationError" th:if="${#fields.hasErrors('aantal')}" errors="*{aantal}">Aantal moet positief zijn</span></td>
+                        	<td><input type="hidden" th:field="*{id}" /> <span
+				class="validationError" th:if="${#fields.hasErrors('aantal')}"
+				th:errors="*{aantal}">usernaam moet ingevuld!</span></td>
+				</tr><tr><td><span class="validationError" th:if="${#fields.hasErrors('aantal')}" th:errors="*{aantal}">Aantal moet positief zijn</span></td></tr><tr>
+				
+									<td class=text>Aantal :</td>
+					<td class=left><input type="number" th:field="*{aantal}" /></td>
+					<td><input type="hidden" th:field="*{id}" /> <span
+				class="validationError" th:if="${#fields.hasErrors('aantal')}"
+				th:errors="*{aantal}">Aantal moet 1 of meer zijn</span></td>
+				</tr>
+				
                 </tr>
 				<tr>
 					<td colspan=2>

@@ -44,6 +44,10 @@ public class BestelregelController {
 	private final KlantRepository klantRepo;
 	@SuppressWarnings("unused")
 	private final AccountRepository accountRepo;
+	
+	int oudeBestelregelAantal=0;
+	Artikel oudeBestelregelArtikel=null;
+	BigDecimal oudeBestelregelPrijs=new BigDecimal("0");
 
 	@Autowired
 	public BestelregelController(BestelregelRepository bestrelregelRepo, BestellingRepository bestellingRepo,
@@ -123,7 +127,7 @@ public class BestelregelController {
 		model.addAttribute("artikel", new Artikel());
 		model.addAttribute("bestellingIdLong", 0L);
 		model.addAttribute("bestelling", new Bestelling());
-		
+
 		return "bestelregelNieuw";
 	}
 
@@ -131,26 +135,27 @@ public class BestelregelController {
 	public String processBestelregel(@Valid Bestelregel bestelregel, Errors bestelregelErrors,
 			@ModelAttribute("bestellingIdLong") Long bestellingIdLong, Long klant, Principal principal, Model model) {
 		Bestelling bestelling;
-		//controleer of er geen fouten in formulier staan
-		if (bestelregelErrors.hasFieldErrors()) { //kan in principe met voorraad worden samengevoegd in OR-constructie?
-			//als er fouten zijn en de bestelling wel al bestaat
-			if(bestellingIdLong==0L) {
+		// controleer of er geen fouten in formulier staan
+		if (bestelregelErrors.hasFieldErrors()) { // kan in principe met voorraad worden samengevoegd in OR-constructie?
+			// als er fouten zijn en de bestelling wel al bestaat
+			if (bestellingIdLong == 0L) {
 				return "bestelregelNieuw";
 			}
-			//als er fouten zijn en de bestelling wel al bestaat
+			// als er fouten zijn en de bestelling wel al bestaat
 			else {
-				return "bestelregelNieuw"+bestellingIdLong;
+				return "bestelregelNieuw" + bestellingIdLong;
 			}
 		}
-		//controleer of artikelvoorraad voldoet
+		// controleer of artikelvoorraad voldoet
 		if (!checkOfArtikelVoorraadVoldoet(bestelregel.getArtikel(), bestelregel.getAantal())) {
-			//als artikelvoorraad niet voldoet en het ging om een nog niet bestaande bestelling
-			if(bestellingIdLong==0L) {
+			// als artikelvoorraad niet voldoet en het ging om een nog niet bestaande
+			// bestelling
+			if (bestellingIdLong == 0L) {
 				return "redirect:bestelregel/nieuw";
 			}
-			//als artikelvoorraad niet voldoet en de bestelling wel al bestaat
+			// als artikelvoorraad niet voldoet en de bestelling wel al bestaat
 			else {
-				return "redirect:bestelregel/nieuw/"+bestellingIdLong;
+				return "redirect:bestelregel/nieuw/" + bestellingIdLong;
 			}
 		}
 		if (bestellingIdLong == 0) {
@@ -192,6 +197,10 @@ public class BestelregelController {
 				artikelRepo.findAll().forEach(i -> artikelList.add(i));
 				model.addAttribute("artikelen", artikelList);
 				model.addAttribute("bijbehorendeBestellingId", bestelregel.getBestelling().getId());
+				
+				oudeBestelregelAantal=bestelregel.getAantal();
+				oudeBestelregelArtikel=bestelregel.getArtikel();
+				oudeBestelregelPrijs=bestelregel.getPrijs();
 
 				return "bestelregelMuteer";
 			}
@@ -208,48 +217,49 @@ public class BestelregelController {
 		Bestelling bestelling = bestelregel.getBestelling();
 
 		if (heeftToegangTotBestelling(principal, bestelling)) {
-				// artikelvoorraad verhogen met verwijderd aantal artikelen
-				wijzigArtikelVoorraad(bestelregel.getArtikel(), -bestelregel.getAantal());
-				// prijs bestelling verlagen met prijs te verwijderen bestelregel
-				wijzigBestellingPrijs(bestelling, bestelregel.getPrijs().multiply(new BigDecimal("-1")));
-				bestellingRepo.save(bestelling);
-				bestelregelRepo.deleteById(bestelregelIdLong);
-				return "redirect:/bestelling";
-			}
-			
+			// artikelvoorraad verhogen met verwijderd aantal artikelen
+			wijzigArtikelVoorraad(bestelregel.getArtikel(), -bestelregel.getAantal());
+			// prijs bestelling verlagen met prijs te verwijderen bestelregel
+			wijzigBestellingPrijs(bestelling, bestelregel.getPrijs().multiply(new BigDecimal("-1")));
+			bestellingRepo.save(bestelling);
+			bestelregelRepo.deleteById(bestelregelIdLong);
+			return "redirect:/bestelling";
+		}
+
 		return "redirect:/main";
 	}
 
 	@PostMapping("/bestelregelMuteerForm")
-	public String processBestelregelMuteer(Model model, @Valid Bestelregel bestelregel, Errors bestelregelErrors,
-			@SessionAttribute("bijbehorendeBestellingId") Long bestellingId,
-			@SessionAttribute("teMuterenBestelregel") Bestelregel oudeBestelregel) {
-		if(bestelregelErrors.hasFieldErrors()) {
-			System.out.println("hij gaat idd terug naar bestelregelMuteer");
+	public String processBestelregelMuteer(@Valid Bestelregel teMuterenBestelregel, Errors errors,
+			@SessionAttribute("bijbehorendeBestellingId") Long bestellingId, Model model) {
+		if (errors.hasErrors()) {
+			model.addAttribute("teMuterenBestelregel", teMuterenBestelregel);
 			return "bestelregelMuteer";
 		}
-		
+
 		Bestelling bestelling = bestellingRepo.findById(bestellingId).get();
-		bestelregel.setBestelling(bestelling);
+		teMuterenBestelregel.setBestelling(bestelling);
 
-		bestelregel
-				.setPrijs(bestelregel.getArtikel().getPrijs().multiply(new BigDecimal("" + bestelregel.getAantal())));
-		if(checkOfArtikelVoorraadVoldoet(bestelregel.getArtikel(), bestelregel.getAantal())) {
+		teMuterenBestelregel
+				.setPrijs(teMuterenBestelregel.getArtikel().getPrijs().multiply(new BigDecimal("" + teMuterenBestelregel.getAantal())));
+		if (checkOfArtikelVoorraadVoldoet(teMuterenBestelregel.getArtikel(), teMuterenBestelregel.getAantal())) {
+			//update prijs van hele bestelling door totaalprijs oude bestelregel eraf te trekken
+			wijzigBestellingPrijs(bestelling, oudeBestelregelPrijs.multiply(new BigDecimal("-1")));
+			//update prijs van hele bestelling door totaalprijs nieuwe bestelregel erbij op te tellen
+			wijzigBestellingPrijs(bestelling, teMuterenBestelregel.getPrijs());
+			
+			//update artikelvoorraad door van het artikel het aantal van de oude bestelregel erbij op te tellen
+			wijzigArtikelVoorraad(oudeBestelregelArtikel, oudeBestelregelAantal * -1);
+			//update artikelvoorraad door van het artikel het aantal van de nieuwe bestelregel eraf te trekken
+			wijzigArtikelVoorraad(teMuterenBestelregel.getArtikel(), teMuterenBestelregel.getAantal());
 
-		wijzigBestellingPrijs(bestelling, oudeBestelregel.getPrijs().multiply(new BigDecimal("-1")));
-		wijzigBestellingPrijs(bestelling, bestelregel.getPrijs());
-		wijzigArtikelVoorraad(oudeBestelregel.getArtikel(), oudeBestelregel.getAantal() * -1);
-		wijzigArtikelVoorraad(bestelregel.getArtikel(), bestelregel.getAantal());
-
-		bestelregelRepo.save(bestelregel);
-		return "redirect:bestelregels/" + bestelregel.getBestelling().getId();
+			bestelregelRepo.save(teMuterenBestelregel);
+			return "redirect:bestelregels/" + teMuterenBestelregel.getBestelling().getId();
+		} else {
+			// terug naar bestelregel muteren, aangezien aantal niet matcht met voorraad
+			return "redirect:bestelregel/muteer/" + teMuterenBestelregel.getBestelling().getId();
 		}
-		else {
-			//terug naar bestelregel muteren, aangezien aantal niet matcht met voorraad
-			return "redirect:bestelregel/muteer/"+bestelregel.getBestelling().getId();
-		}
-		
-	
+
 	}
 
 	private void wijzigBestellingPrijs(Bestelling bestelling, BigDecimal prijsNieuweBestelregel) {
@@ -277,7 +287,7 @@ public class BestelregelController {
 			Klant klantOpWieBestellingStaat = bestelling.getKlant();
 			return ingelogdeKlant.equals(klantOpWieBestellingStaat);
 		} else
-			//andere rollen dan klanten hebben altijd toegang tot de bestelling
+			// andere rollen dan klanten hebben altijd toegang tot de bestelling
 			return true;
 
 	}
